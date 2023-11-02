@@ -2,8 +2,7 @@
 <!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
 <cambalache-project version="0.13.1" target_tk="gtk-4.0">
   <ui>
-	(1,1,"clerk.ui","window.ui",None,None,None,None,None,None,None),
-	(2,1,None,"file_list_item.ui",None,None,None,None,None,None,None)
+	(1,1,"clerk.ui","window.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(1,"gtk","4.2",None),
@@ -32,12 +31,11 @@
 	(1,41,"AdwActionRow",None,25,None,None,None,-1,None),
 	(1,42,"GtkFileChooserNative","filePicker",None,None,None,None,-1,None),
 	(1,70,"GtkBox",None,9,None,"title",None,None,None),
-	(1,71,"GtkSearchEntry","mediaSearchInput",70,None,None,None,None,None),
-	(1,72,"GtkBox","undoRedo",70,None,None,None,1,None),
+	(1,72,"GtkBox","undoRedo",70,None,None,None,None,None),
 	(1,73,"GtkButton","undo",72,None,None,None,None,None),
 	(1,74,"GtkButton","redo",72,None,None,None,1,None),
 	(1,84,"GtkBox","table",2,None,None,None,1,None),
-	(1,85,"GtkBox","header",84,None,None,None,None,None),
+	(1,85,"GtkBox","tableHeader",84,None,None,None,None,None),
 	(1,86,"GtkBox","headerStart",85,None,None,None,None,None),
 	(1,87,"GtkLabel",None,86,None,None,None,None,None),
 	(1,88,"GtkBox","headerEnd",85,None,None,None,1,None),
@@ -54,9 +52,34 @@
 	(1,99,"GtkMultiSelection",None,97,None,None,None,None,None),
 	(1,100,"GListStore","renames",99,None,None,None,None,None),
 	(1,101,"GtkButton","filesRemove",9,None,"start",None,2,None),
-	(2,1,"GtkListItem","FileListItem",None,None,None,None,-1,None),
-	(2,2,"GtkBox",None,1,None,None,None,-1,None),
-	(2,3,"GtkLabel",None,2,None,None,None,-1,None)
+	(1,117,"(external)","71",None,None,None,None,None,None),
+	(1,125,"(external)","117",None,None,None,None,None,None),
+	(1,131,"(external)","125",None,None,None,None,None,None),
+	(1,133,"(external)","131",None,None,None,None,None,None),
+	(1,135,"(external)","133",None,None,None,None,None,None),
+	(1,148,"(external)","135",None,None,None,None,None,None),
+	(1,153,"(external)","148",None,None,None,None,None,None),
+	(1,159,"(external)","153",None,None,None,None,None,None),
+	(1,165,"(external)","159",None,None,None,None,None,None),
+	(1,166,"GtkBox","mediaSearchBox",70,None,None,None,1,None),
+	(1,167,"GtkToggleButton","tv",166,None,None,None,1,None),
+	(1,168,"GtkToggleButton","movie",166,None,None,None,2,None),
+	(1,169,"GtkSearchEntry","mediaSearchInput",166,None,None,None,None,None),
+	(1,170,"(external)","165",None,None,None,None,None,None),
+	(1,171,"GtkPopover","searchPop",None,None,None,None,-1,None),
+	(1,172,"GtkBox",None,171,None,None,None,None,None),
+	(1,173,"GtkBox","resultsHeader",172,None,None,None,None,None),
+	(1,174,"GtkButton","resultsBack",173,None,None,None,None,None),
+	(1,175,"GtkLabel","resultsTitle",173,None,None,None,1,None),
+	(1,176,"GtkButton","resultsAdd",173,None,None,None,2,None),
+	(1,177,"AdwViewStack",None,172,None,None,None,1,None),
+	(1,178,"GtkScrolledWindow",None,177,None,None,None,None,None),
+	(1,179,"GtkListView","resultsList",178,None,None,None,None,None),
+	(1,180,"GtkSignalListItemFactory",None,179,None,None,None,None,None),
+	(1,181,"GtkSingleSelection",None,179,None,None,None,None,None),
+	(1,182,"GListStore",None,181,None,None,None,None,None),
+	(1,183,"GtkScrolledWindow",None,177,None,None,None,1,None),
+	(1,184,"GtkListView","resultsDetails",183,None,None,None,None,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -77,6 +100,7 @@
 	(1,25,"GtkListBox","selection-mode","none",None,None,None,None,None,None,None,None,None),
 	(1,25,"GtkWidget","css-classes","rich-list\nboxed-list",None,None,None,None,None,None,None,None,None),
 	(1,25,"GtkWidget","halign","center",None,None,None,None,None,None,None,None,None),
+	(1,25,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None),
 	(1,25,"GtkWidget","width-request","320",None,None,None,None,None,None,None,None,None),
 	(1,30,"GtkLabel","label","hello",None,None,None,None,None,None,None,None,None),
 	(1,36,"GtkLabel","label","bob",None,None,None,None,None,None,None,None,None),
@@ -87,8 +111,8 @@
 	(1,42,"GtkFileChooser","select-multiple","True",None,None,None,None,None,None,None,None,None),
 	(1,42,"GtkNativeDialog","modal","True",None,None,None,None,None,None,None,None,None),
 	(1,70,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
-	(1,71,"GtkSearchEntry","placeholder-text","Search for media",None,None,None,None,None,None,None,None,None),
 	(1,72,"GtkWidget","css-classes","linked",None,None,None,None,None,None,None,None,None),
+	(1,72,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None),
 	(1,73,"GtkButton","icon-name","edit-undo-symbolic",None,None,None,None,None,None,None,None,None),
 	(1,74,"GtkButton","icon-name","edit-redo-symbolic",None,None,None,None,None,None,None,None,None),
 	(1,84,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
@@ -135,14 +159,39 @@
 	(1,101,"GtkButton","icon-name","app-remove-symbolic",None,None,None,None,None,None,None,None,None),
 	(1,101,"GtkWidget","css-classes","flat",None,None,None,None,None,None,None,None,None),
 	(1,101,"GtkWidget","has-tooltip","True",None,None,None,None,None,None,None,None,None),
-	(1,101,"GtkWidget","tooltip-text","Remove selected",None,None,None,None,None,None,None,None,None)
+	(1,101,"GtkWidget","tooltip-text","Remove selected",None,None,None,None,None,None,None,None,None),
+	(1,166,"GtkWidget","css-classes","linked",None,None,None,None,None,None,None,None,None),
+	(1,167,"GtkButton","icon-name","video-display-symbolic",None,None,None,None,None,None,None,None,None),
+	(1,167,"GtkToggleButton","active","True",None,None,None,None,None,None,None,None,None),
+	(1,168,"GtkButton","icon-name","emblem-videos-symbolic",None,None,None,None,None,None,None,None,None),
+	(1,169,"GtkSearchEntry","placeholder-text","Search for media",None,None,None,None,None,None,None,None,None),
+	(1,171,"GtkWidget","height-request","320",None,None,None,None,None,None,None,None,None),
+	(1,171,"GtkWidget","width-request","480",None,None,None,None,None,None,None,None,None),
+	(1,172,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
+	(1,172,"GtkOrientable","orientation","vertical",None,None,None,None,None,None,None,None,None),
+	(1,174,"GtkButton","icon-name","go-previous-symbolic",None,None,None,None,None,None,None,None,None),
+	(1,174,"GtkWidget","css-classes","flat",None,None,None,None,None,None,None,None,None),
+	(1,175,"GtkLabel","label","Movies",None,None,None,None,None,None,None,None,None),
+	(1,175,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
+	(1,176,"GtkButton","icon-name","list-add-symbolic",None,None,None,None,None,None,None,None,None),
+	(1,176,"GtkWidget","css-classes","flat",None,None,None,None,None,None,None,None,None),
+	(1,178,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
+	(1,178,"GtkWidget","vexpand","True",None,None,None,None,None,None,None,None,None),
+	(1,179,"GtkListView","factory",None,None,None,None,None,180,None,None,None,None),
+	(1,179,"GtkListView","model",None,None,None,None,None,181,None,None,None,None),
+	(1,181,"GtkSingleSelection","model",None,None,None,None,None,182,None,None,None,None),
+	(1,182,"GListStore","item-type","MediaData",None,None,None,None,None,None,None,None,None),
+	(1,183,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
+	(1,183,"GtkWidget","vexpand","True",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),
 	(3,1,12,"GtkButton","clicked","onFilesUpdate",None,None,None,None,None),
 	(7,1,42,"GtkNativeDialog","response","onFilesAdded",None,None,None,None,None),
-	(24,1,71,"GtkSearchEntry","search-changed","onMediaSearchChanged",None,None,None,None,None),
 	(27,1,94,"GtkSignalListItemFactory","bind","bindFileItem",None,None,None,None,None),
-	(28,1,94,"GtkSignalListItemFactory","setup","setupFileItem",None,None,None,None,None)
+	(28,1,94,"GtkSignalListItemFactory","setup","setupFileItem",None,None,None,None,None),
+	(37,1,169,"GtkSearchEntry","search-changed","onMediaSearchChanged",None,None,None,None,None),
+	(38,1,180,"GtkSignalListItemFactory","setup","setupSearchItem",None,None,None,None,None),
+	(39,1,180,"GtkSignalListItemFactory","bind","bindSearchItem",None,None,None,None,None)
   </object_signal>
 </cambalache-project>

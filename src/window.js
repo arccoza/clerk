@@ -51,6 +51,14 @@ export const ClerkWindow = GObject.registerClass({
     row.subtitle = file.get_path()
   }
 
+  setupSearchItem(listView, listItem) {
+
+  }
+
+  bindSearchItem(listView, listItem) {
+    
+  }
+
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1000; i++) {
       console.log("onFilesAdded", file, file.get_basename())

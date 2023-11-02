@@ -18,14 +18,9 @@
               <object class="GtkBox">
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkSearchEntry" id="mediaSearchInput">
-                    <property name="placeholder-text">Search for media</property>
-                    <signal name="search-changed" handler="onMediaSearchChanged"/>
-                  </object>
-                </child>
-                <child>
                   <object class="GtkBox" id="undoRedo">
                     <property name="css-classes">linked</property>
+                    <property name="visible">False</property>
                     <child>
                       <object class="GtkButton" id="undo">
                         <property name="icon-name">edit-undo-symbolic</property>
@@ -34,6 +29,28 @@
                     <child>
                       <object class="GtkButton" id="redo">
                         <property name="icon-name">edit-redo-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="mediaSearchBox">
+                    <property name="css-classes">linked</property>
+                    <child>
+                      <object class="GtkSearchEntry" id="mediaSearchInput">
+                        <property name="placeholder-text">Search for media</property>
+                        <signal name="search-changed" handler="onMediaSearchChanged"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="tv">
+                        <property name="active">True</property>
+                        <property name="icon-name">video-display-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="movie">
+                        <property name="icon-name">emblem-videos-symbolic</property>
                       </object>
                     </child>
                   </object>
@@ -87,7 +104,7 @@
             <property name="spacing">6</property>
             <property name="vexpand">True</property>
             <child>
-              <object class="GtkBox" id="header">
+              <object class="GtkBox" id="tableHeader">
                 <child>
                   <object class="GtkBox" id="headerStart">
                     <property name="hexpand">True</property>
@@ -188,6 +205,7 @@
 boxed-list</property>
             <property name="halign">center</property>
             <property name="selection-mode">none</property>
+            <property name="visible">False</property>
             <property name="width-request">320</property>
             <child>
               <object class="GtkListBoxRow">
@@ -249,5 +267,75 @@ boxed-list</property>
     <property name="modal">True</property>
     <property name="select-multiple">True</property>
     <signal name="response" handler="onFilesAdded"/>
+  </object>
+  <object class="GtkPopover" id="searchPop">
+    <property name="height-request">320</property>
+    <property name="width-request">480</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkBox" id="resultsHeader">
+            <child>
+              <object class="GtkButton" id="resultsBack">
+                <property name="css-classes">flat</property>
+                <property name="icon-name">go-previous-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="resultsTitle">
+                <property name="hexpand">True</property>
+                <property name="label">Movies</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="resultsAdd">
+                <property name="css-classes">flat</property>
+                <property name="icon-name">list-add-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwViewStack">
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkListView" id="resultsList">
+                    <property name="factory">
+                      <object class="GtkSignalListItemFactory">
+                        <signal name="setup" handler="setupSearchItem"/>
+                        <signal name="bind" handler="bindSearchItem"/>
+                      </object>
+                    </property>
+                    <property name="model">
+                      <object class="GtkSingleSelection">
+                        <property name="model">
+                          <object class="GListStore">
+                            <property name="item-type">MediaData</property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkListView" id="resultsDetails"/>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

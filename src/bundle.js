@@ -245,8 +245,6 @@ var ClerkWindow = GObject.registerClass({
   }
   setupFileItem(listView, listItem) {
     const row = new Adw.ActionRow();
-    row.hexpand = true;
-    row.width_request = 320;
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {
@@ -255,6 +253,10 @@ var ClerkWindow = GObject.registerClass({
     row.icon_name = "checkbox";
     row.title = file.get_basename();
     row.subtitle = file.get_path();
+  }
+  setupSearchItem(listView, listItem) {
+  }
+  bindSearchItem(listView, listItem) {
   }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {

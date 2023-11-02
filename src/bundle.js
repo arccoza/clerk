@@ -24,7 +24,7 @@ function promiseTask(object, method, finish, ...args) {
 import Soup from "gi://Soup?version=3.0";
 import GLib2 from "gi://GLib";
 import Gio from "gi://Gio";
-async function fetch2(url, options = {}) {
+async function fetch(url, options = {}) {
   if (typeof url === "object") {
     options = url;
     url = options.url;
@@ -202,7 +202,7 @@ var WebSocket = class {
 Signals.addSignalMethods(WebSocket.prototype);
 
 // src/troll/src/globals.js
-Object.entries({ atob, btoa, fetch: fetch2, WebSocket }).forEach(([key, value]) => {
+Object.entries({ atob, btoa, fetch, WebSocket }).forEach(([key, value]) => {
   if (!globalThis[key])
     globalThis[key] = value;
 });
@@ -245,6 +245,8 @@ var ClerkWindow = GObject.registerClass({
   }
   setupFileItem(listView, listItem) {
     const row = new Adw.ActionRow();
+    row.hexpand = true;
+    row.width_request = 320;
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {
@@ -307,7 +309,6 @@ var ClerkApplication = GObject2.registerClass(
   }
 );
 function main(argv) {
-  console.log("--------------->", fetch);
   const application = new ClerkApplication();
   return application.runAsync(argv);
 }

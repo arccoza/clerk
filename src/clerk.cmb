@@ -13,7 +13,7 @@
 	(1,1,"AdwApplicationWindow","ClerkWindow",None,None,None,None,-1,None),
 	(1,2,"GtkBox",None,1,None,None,None,-1,None),
 	(1,9,"AdwHeaderBar",None,2,None,None,None,None,None),
-	(1,10,"GtkButton","filesAdd",9,None,"start",None,None,None),
+	(1,10,"GtkButton","filesAdd",9,None,"start",None,1,None),
 	(1,12,"GtkButton","filesUpdate",9,None,"end",None,3,None),
 	(1,13,"AdwButtonContent",None,10,None,None,None,-1,None),
 	(1,14,"AdwButtonContent",None,12,None,None,None,-1,None),
@@ -31,7 +31,7 @@
 	(1,40,"AdwExpanderRow",None,25,None,None,None,-1,None),
 	(1,41,"AdwActionRow",None,25,None,None,None,-1,None),
 	(1,42,"GtkFileChooserNative","filePicker",None,None,None,None,-1,None),
-	(1,70,"GtkBox",None,9,None,"title",None,-1,None),
+	(1,70,"GtkBox",None,9,None,"title",None,None,None),
 	(1,71,"GtkSearchEntry","mediaSearchInput",70,None,None,None,None,None),
 	(1,72,"GtkBox","undoRedo",70,None,None,None,1,None),
 	(1,73,"GtkButton","undo",72,None,None,None,None,None),
@@ -53,6 +53,7 @@
 	(1,98,"GtkSignalListItemFactory",None,97,None,None,None,None,None),
 	(1,99,"GtkMultiSelection",None,97,None,None,None,None,None),
 	(1,100,"GListStore","renames",99,None,None,None,None,None),
+	(1,101,"GtkButton","filesRemove",9,None,"start",None,2,None),
 	(2,1,"GtkListItem","FileListItem",None,None,None,None,-1,None),
 	(2,2,"GtkBox",None,1,None,None,None,-1,None),
 	(2,3,"GtkLabel",None,2,None,None,None,-1,None)
@@ -63,7 +64,11 @@
 	(1,2,"GtkBox","spacing","12",None,None,None,None,None,None,None,None,None),
 	(1,2,"GtkOrientable","orientation","vertical",None,None,None,None,None,None,None,None,None),
 	(1,10,"GtkWidget","css-classes","raised",None,None,None,None,None,None,None,None,None),
+	(1,10,"GtkWidget","has-tooltip","True",None,None,None,None,None,None,None,None,None),
+	(1,10,"GtkWidget","tooltip-text","Add files",None,None,None,None,None,None,None,None,None),
 	(1,12,"GtkWidget","css-classes","destructive-action",None,None,None,None,None,None,None,None,None),
+	(1,12,"GtkWidget","has-tooltip","True",None,None,None,None,None,None,None,None,None),
+	(1,12,"GtkWidget","tooltip-text","Rename files",None,None,None,None,None,None,None,None,None),
 	(1,13,"AdwButtonContent","icon-name","list-add-symbolic",None,None,None,None,None,None,None,None,None),
 	(1,13,"AdwButtonContent","label","Add Files",None,None,None,None,None,None,None,None,None),
 	(1,14,"AdwButtonContent","icon-name","folder-download-symbolic",None,None,None,None,None,None,None,None,None),
@@ -126,7 +131,11 @@
 	(1,97,"GtkWidget","css-classes","rich-list",None,None,None,None,None,None,None,None,None),
 	(1,97,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
 	(1,97,"GtkWidget","width-request","320",None,None,None,None,None,None,None,None,None),
-	(1,99,"GtkMultiSelection","model",None,None,None,None,None,100,None,None,None,None)
+	(1,99,"GtkMultiSelection","model",None,None,None,None,None,100,None,None,None,None),
+	(1,101,"GtkButton","icon-name","app-remove-symbolic",None,None,None,None,None,None,None,None,None),
+	(1,101,"GtkWidget","css-classes","flat",None,None,None,None,None,None,None,None,None),
+	(1,101,"GtkWidget","has-tooltip","True",None,None,None,None,None,None,None,None,None),
+	(1,101,"GtkWidget","tooltip-text","Remove selected",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),

@@ -43,6 +43,8 @@
             <child type="start">
               <object class="GtkButton" id="filesAdd">
                 <property name="css-classes">raised</property>
+                <property name="has-tooltip">True</property>
+                <property name="tooltip-text">Add files</property>
                 <signal name="clicked" handler="onFilesAdd"/>
                 <child>
                   <object class="AdwButtonContent">
@@ -52,9 +54,19 @@
                 </child>
               </object>
             </child>
+            <child type="start">
+              <object class="GtkButton" id="filesRemove">
+                <property name="css-classes">flat</property>
+                <property name="has-tooltip">True</property>
+                <property name="icon-name">app-remove-symbolic</property>
+                <property name="tooltip-text">Remove selected</property>
+              </object>
+            </child>
             <child type="end">
               <object class="GtkButton" id="filesUpdate">
                 <property name="css-classes">destructive-action</property>
+                <property name="has-tooltip">True</property>
+                <property name="tooltip-text">Rename files</property>
                 <signal name="clicked" handler="onFilesUpdate"/>
                 <child>
                   <object class="AdwButtonContent">

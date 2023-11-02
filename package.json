@@ -5,6 +5,14 @@
   "private": true,
   "type": "module",
   "main": "main.js",
+  "scripts": {
+    "build:bundle": "esbuild src/main.js --bundle --outfile=src/bundle.js \"--external:gi*\" --platform=neutral",
+    "build:flatpak": "flatpak-builder flatpak-build-dir com.arccoza.clerk.json --force-clean --user --install",
+    "build": "npm run build:bundle && npm run build:flatpak",
+    "start:flatpak": "flatpak run com.arccoza.clerk",
+    "start": "npm run build && npm run start:flatpak",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "github.com/arccoza/clerk"
@@ -15,5 +23,8 @@
     "metadata"
   ],
   "author": "Adrien de Pierres",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "0.19.5"
+  }
 }

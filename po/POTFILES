@@ -1,0 +1,6 @@
+data/com.arccoza.clerk.desktop.in
+data/com.arccoza.clerk.appdata.xml.in
+data/com.arccoza.clerk.gschema.xml
+src/main.js
+src/window.js
+src/window.ui

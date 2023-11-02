@@ -14,22 +14,42 @@
         <property name="spacing">12</property>
         <child>
           <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkSearchEntry" id="mediaSearchInput">
+                    <property name="placeholder-text">Search for media</property>
+                    <signal name="search-changed" handler="onMediaSearchChanged"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="undoRedo">
+                    <property name="css-classes">linked</property>
+                    <child>
+                      <object class="GtkButton" id="undo">
+                        <property name="icon-name">edit-undo-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="redo">
+                        <property name="icon-name">edit-redo-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
             <child type="start">
               <object class="GtkButton" id="filesAdd">
                 <property name="css-classes">raised</property>
                 <signal name="clicked" handler="onFilesAdd"/>
                 <child>
                   <object class="AdwButtonContent">
-                    <property name="icon-name">folder-symbolic</property>
+                    <property name="icon-name">list-add-symbolic</property>
                     <property name="label">Add Files</property>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child type="title">
-              <object class="GtkSearchEntry" id="mediaSearchInput">
-                <property name="placeholder-text">Search for media</property>
-                <signal name="search-changed" handler="onMediaSearchChanged"/>
               </object>
             </child>
             <child type="end">
@@ -44,68 +64,107 @@
                 </child>
               </object>
             </child>
-            <child type="end">
-              <object class="GtkBox">
-                <property name="css-classes">linked</property>
-                <child>
-                  <object class="GtkButton" id="undo">
-                    <property name="icon-name">edit-undo-symbolic</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="redo">
-                    <property name="icon-name">edit-redo-symbolic</property>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
-            <property name="css-classes">card</property>
+          <object class="GtkBox" id="table">
+            <property name="hexpand">True</property>
             <property name="margin-end">12</property>
             <property name="margin-start">12</property>
-            <property name="overflow">hidden</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
             <property name="vexpand">True</property>
-            <property name="vexpand-set">True</property>
             <child>
-              <object class="GtkListView">
-                <property name="css-classes">rich-list</property>
-                <property name="enable-rubberband">True</property>
-                <property name="factory">
-                  <object class="GtkSignalListItemFactory">
-                    <signal name="bind" handler="bindFileItem"/>
-                    <signal name="setup" handler="setupFileItem"/>
-                  </object>
-                </property>
-                <property name="model">
-                  <object class="GtkMultiSelection">
-                    <property name="model">
-                      <object class="GListStore" id="files">
-                        <property name="item-type">GFile</property>
+              <object class="GtkBox" id="header">
+                <child>
+                  <object class="GtkBox" id="headerStart">
+                    <property name="hexpand">True</property>
+                    <property name="width-request">320</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Files</property>
+                        <property name="margin-start">12</property>
                       </object>
-                    </property>
+                    </child>
                   </object>
-                </property>
-                <property name="show-separators">True</property>
+                </child>
+                <child>
+                  <object class="GtkBox" id="headerEnd">
+                    <property name="hexpand">True</property>
+                    <property name="width-request">320</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="halign">start</property>
+                        <property name="hexpand">True</property>
+                        <property name="label">Renames</property>
+                        <property name="margin-start">12</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="css-classes">flat</property>
+                        <property name="icon-name">document-edit-symbolic</property>
+                        <property name="margin-end">12</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwLeaflet">
-            <property name="vexpand">True</property>
             <child>
-              <object class="GtkListBox">
-                <property name="css-classes">boxed-list</property>
-                <property name="width-request">560</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBox">
-                <property name="css-classes">boxed-list</property>
-                <property name="width-request">560</property>
+              <object class="GtkScrolledWindow">
+                <property name="css-classes">card</property>
+                <property name="hexpand">True</property>
+                <property name="overflow">hidden</property>
+                <property name="vexpand">True</property>
+                <property name="vexpand-set">True</property>
+                <child>
+                  <object class="AdwLeaflet">
+                    <property name="hexpand">True</property>
+                    <child>
+                      <object class="GtkListView">
+                        <property name="css-classes">rich-list</property>
+                        <property name="enable-rubberband">True</property>
+                        <property name="factory">
+                          <object class="GtkSignalListItemFactory">
+                            <signal name="bind" handler="bindFileItem"/>
+                            <signal name="setup" handler="setupFileItem"/>
+                          </object>
+                        </property>
+                        <property name="hexpand">True</property>
+                        <property name="model">
+                          <object class="GtkMultiSelection">
+                            <property name="model">
+                              <object class="GListStore" id="files">
+                                <property name="item-type">GFile</property>
+                              </object>
+                            </property>
+                          </object>
+                        </property>
+                        <property name="show-separators">True</property>
+                        <property name="width-request">320</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkListView">
+                        <property name="css-classes">rich-list</property>
+                        <property name="factory">
+                          <object class="GtkSignalListItemFactory"/>
+                        </property>
+                        <property name="hexpand">True</property>
+                        <property name="model">
+                          <object class="GtkMultiSelection">
+                            <property name="model">
+                              <object class="GListStore" id="renames"/>
+                            </property>
+                          </object>
+                        </property>
+                        <property name="show-separators">True</property>
+                        <property name="width-request">320</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

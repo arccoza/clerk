@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.16.0 -->
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="GtkListItem">
+    <child>
+      <object class="GtkBox">
+        <child>
+          <object class="GtkLabel">
+	          <binding name="label">
+		          <lookup name="get_basename" type="GFile">
+			          <lookup name="item">GtkListItem</lookup>
+		          </lookup>
+	          </binding>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

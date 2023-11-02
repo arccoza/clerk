@@ -36,6 +36,7 @@ var ClerkWindow = GObject.registerClass({
   }
   setupFileItem(listView, listItem) {
     const row = new Adw.ActionRow();
+    row.hexpand = true;
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {

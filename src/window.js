@@ -1,6 +1,6 @@
-import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
-import Adw from 'gi://Adw';
+import GObject from 'gi://GObject'
+import Gtk from 'gi://Gtk'
+import Adw from 'gi://Adw'
 
 
 export const ClerkWindow = GObject.registerClass({
@@ -9,7 +9,7 @@ export const ClerkWindow = GObject.registerClass({
   InternalChildren: ["filesAdd", "mediaSearchInput", "filesUpdate", "filePicker", "files"],
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {
-    super({ application });
+    super({ application })
   }
 
   async onFilesAdd(button) {
@@ -63,5 +63,5 @@ export const ClerkWindow = GObject.registerClass({
       this._files
     }
   }
-});
+})
 

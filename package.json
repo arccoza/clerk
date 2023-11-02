@@ -1,0 +1,19 @@
+{
+  "name": "clerk",
+  "version": "0.1.0",
+  "description": "Media renamer",
+  "private": true,
+  "type": "module",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "github.com/arccoza/clerk"
+  },
+  "keywords": [
+    "media",
+    "rename",
+    "metadata"
+  ],
+  "author": "Adrien de Pierres",
+  "license": "MIT"
+}

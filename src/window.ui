@@ -11,7 +11,7 @@
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
-        <property name="spacing">12</property>
+        <property name="spacing">24</property>
         <child>
           <object class="AdwHeaderBar">
             <child type="title">
@@ -59,14 +59,13 @@
             </child>
             <child type="start">
               <object class="GtkButton" id="filesAdd">
-                <property name="css-classes">raised</property>
+                <property name="css-classes">flat</property>
                 <property name="has-tooltip">True</property>
                 <property name="tooltip-text">Add files</property>
                 <signal name="clicked" handler="onFilesAdd"/>
                 <child>
                   <object class="AdwButtonContent">
-                    <property name="icon-name">list-add-symbolic</property>
-                    <property name="label">Add Files</property>
+                    <property name="icon-name">folder-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -79,18 +78,15 @@
                 <property name="tooltip-text">Remove selected</property>
               </object>
             </child>
-            <child type="end">
+            <child type="start">
+              <object class="GtkSeparator">
+                <property name="orientation">vertical</property>
+              </object>
+            </child>
+            <child type="start">
               <object class="GtkButton" id="filesUpdate">
-                <property name="css-classes">destructive-action</property>
-                <property name="has-tooltip">True</property>
-                <property name="tooltip-text">Rename files</property>
-                <signal name="clicked" handler="onFilesUpdate"/>
-                <child>
-                  <object class="AdwButtonContent">
-                    <property name="icon-name">folder-download-symbolic</property>
-                    <property name="label">Update</property>
-                  </object>
-                </child>
+                <property name="css-classes">warning</property>
+                <property name="icon-name">folder-download-symbolic</property>
               </object>
             </child>
           </object>
@@ -111,6 +107,7 @@
                     <property name="width-request">320</property>
                     <child>
                       <object class="GtkLabel">
+                        <property name="css-classes">heading</property>
                         <property name="label">Files</property>
                         <property name="margin-start">12</property>
                       </object>
@@ -123,6 +120,7 @@
                     <property name="width-request">320</property>
                     <child>
                       <object class="GtkLabel">
+                        <property name="css-classes">heading</property>
                         <property name="halign">start</property>
                         <property name="hexpand">True</property>
                         <property name="label">Renames</property>
@@ -196,6 +194,11 @@
                 </child>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="opacity">0.0</property>
           </object>
         </child>
         <child>
@@ -285,6 +288,7 @@ boxed-list</property>
             </child>
             <child>
               <object class="GtkLabel" id="resultsTitle">
+                <property name="css-classes">heading</property>
                 <property name="hexpand">True</property>
                 <property name="label">Movies</property>
               </object>

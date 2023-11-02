@@ -1,11 +1,11 @@
-import GObject from 'gi://GObject'
-import Gtk from 'gi://Gtk'
-import Adw from 'gi://Adw'
+import GObject from "gi://GObject"
+import Gtk from "gi://Gtk"
+import Adw from "gi://Adw"
 
 
 export const ClerkWindow = GObject.registerClass({
-  GTypeName: 'ClerkWindow',
-  Template: 'resource:///com/arccoza/clerk/window.ui',
+  GTypeName: "ClerkWindow",
+  Template: "resource:///com/arccoza/clerk/window.ui",
   InternalChildren: ["filesAdd", "mediaSearchInput", "filesUpdate", "filePicker", "files"],
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {

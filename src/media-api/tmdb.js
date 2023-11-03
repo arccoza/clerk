@@ -10,7 +10,7 @@ export class TMDB {
 
   async search(type, query, page=1) {
     if (!query) {
-      return
+      throw "Query empty error"
     }
 
     const params = makeSearchParams({

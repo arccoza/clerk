@@ -8,7 +8,7 @@ export class TMDB {
     this._language = language
   }
 
-  search(type, query, page=1) {
+  async search(type, query, page=1) {
     if (!query) {
       return
     }
@@ -32,9 +32,9 @@ export class TMDB {
       }
     }
 
-    fetch(url, options)
-      .then(res => res.json())
-      .then(json => console.log(json))
-      .catch(err => console.error("error:" + err))
+    return fetch(url, options)
+      .then((res) => res.json())
+      // .then(json => console.log(json))
+      // .catch(err => console.error("error:" + err))
   }
 }

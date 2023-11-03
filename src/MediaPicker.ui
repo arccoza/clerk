@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.16.0 -->
+<interface>
+  <requires lib="gtk" version="4.2"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <requires lib="gio" version="2.44"/>
+  <template class="MediaPicker" parent="AdwWindow">
+    <property name="height-request">720</property>
+    <property name="width-request">640</property>
+    <child>
+      <object class="GtkBox">
+        <property name="css-classes">view</property>
+        <property name="hexpand">True</property>
+        <property name="orientation">vertical</property>
+        <property name="vexpand">True</property>
+        <child>
+          <object class="AdwHeaderBar">
+            <property name="css-classes">flat</property>
+            <property name="decoration-layout">icon:close</property>
+            <child type="start">
+              <object class="GtkButton">
+                <property name="icon-name">list-add-symbolic</property>
+              </object>
+            </child>
+            <child type="title">
+              <object class="GtkBox" id="mediaSearchBox">
+                <property name="css-classes">linked</property>
+                <child>
+                  <object class="GtkSearchEntry" id="searchEntry">
+                    <property name="placeholder-text">Search media</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="tv">
+                    <property name="active">True</property>
+                    <property name="icon-name">video-display-symbolic</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="movie">
+                    <property name="icon-name">emblem-videos-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="results">
+            <property name="hexpand">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
+            <property name="vexpand">True</property>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkListView" id="resultsList">
+                    <property name="factory">
+                      <object class="GtkSignalListItemFactory"/>
+                    </property>
+                    <property name="model">
+                      <object class="GtkSingleSelection">
+                        <property name="model">
+                          <object class="GListStore">
+                            <property name="item-type">MediaInfo</property>
+                          </object>
+                        </property>
+                      </object>
+                    </property>
+                    <property name="show-separators">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

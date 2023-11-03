@@ -208,15 +208,10 @@ Object.entries({ atob, btoa, fetch, WebSocket }).forEach(([key, value]) => {
 });
 
 // src/main.js
-import GObject3 from "gi://GObject";
+import GObject4 from "gi://GObject";
 import Gio3 from "gi://Gio";
-import Gtk2 from "gi://Gtk?version=4.0";
-import Adw2 from "gi://Adw?version=1";
-
-// src/window.js
-import GObject2 from "gi://GObject";
-import Gtk from "gi://Gtk";
-import Adw from "gi://Adw";
+import Gtk3 from "gi://Gtk?version=4.0";
+import Adw3 from "gi://Adw?version=1";
 
 // src/gobjects.js
 import Gio2 from "gi://Gio";
@@ -231,8 +226,26 @@ var MediaInfo = GObject.registerClass({
 }, class extends GObject.Object {
 });
 
+// src/MediaPicker.js
+import GObject2 from "gi://GObject";
+import Gtk from "gi://Gtk";
+import Adw from "gi://Adw";
+var MediaPicker = GObject2.registerClass({
+  GTypeName: "MediaPicker",
+  Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
+  InternalChildren: []
+}, class MediaPicker2 extends Adw.Window {
+  constructor(window) {
+    console.log("---------->", window);
+    super();
+  }
+});
+
 // src/window.js
-var ClerkWindow = GObject2.registerClass({
+import GObject3 from "gi://GObject";
+import Gtk2 from "gi://Gtk";
+import Adw2 from "gi://Adw";
+var ClerkWindow = GObject3.registerClass({
   GTypeName: "ClerkWindow",
   Template: "resource:///com/arccoza/clerk/window.ui",
   InternalChildren: [
@@ -242,7 +255,7 @@ var ClerkWindow = GObject2.registerClass({
     "files",
     "mediaPicker"
   ]
-}, class ClerkWindow2 extends Adw.ApplicationWindow {
+}, class ClerkWindow2 extends Adw2.ApplicationWindow {
   constructor(application) {
     super({ application });
   }
@@ -255,14 +268,14 @@ var ClerkWindow = GObject2.registerClass({
   }
   onFilesAdded(filePicker, responseId) {
     console.log("onFilesAdded", responseId);
-    if (responseId !== Gtk.ResponseType.ACCEPT) {
+    if (responseId !== Gtk2.ResponseType.ACCEPT) {
       return;
     }
     const files = filePicker.get_files();
     this.addFiles(files);
   }
   setupFileItem(listView, listItem) {
-    const row = new Adw.ActionRow();
+    const row = new Adw2.ActionRow();
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {
@@ -299,8 +312,8 @@ var ClerkWindow = GObject2.registerClass({
 // src/main.js
 pkg.initGettext();
 pkg.initFormat();
-var ClerkApplication = GObject3.registerClass(
-  class ClerkApplication2 extends Adw2.Application {
+var ClerkApplication = GObject4.registerClass(
+  class ClerkApplication2 extends Adw3.Application {
     constructor() {
       super({ application_id: "com.arccoza.clerk", flags: Gio3.ApplicationFlags.DEFAULT_FLAGS });
       const quit_action = new Gio3.SimpleAction({ name: "quit" });
@@ -322,7 +335,7 @@ var ClerkApplication = GObject3.registerClass(
           ],
           copyright: "\xA9 2023 Adrien"
         };
-        const aboutWindow = new Adw2.AboutWindow(aboutParams);
+        const aboutWindow = new Adw3.AboutWindow(aboutParams);
         aboutWindow.present();
       });
       this.add_action(show_about_action);

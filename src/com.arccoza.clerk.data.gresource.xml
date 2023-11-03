@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/com/arccoza/clerk">
     <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">MediaPicker.ui</file>
     <file preprocess="xml-stripblanks">file_list_item.ui</file>
   </gresource>
 </gresources>

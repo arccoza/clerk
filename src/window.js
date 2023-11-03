@@ -1,7 +1,6 @@
 import GObject from "gi://GObject"
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
-import { MediaInfo } from "./gobjects"
 
 
 export const ClerkWindow = GObject.registerClass({

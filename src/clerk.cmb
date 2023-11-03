@@ -63,17 +63,20 @@
 	(3,1,"AdwWindow","MediaPicker",None,None,None,None,None,None),
 	(3,2,"GtkBox",None,1,None,None,None,None,None),
 	(3,3,"AdwHeaderBar",None,2,None,None,None,None,None),
-	(3,4,"GtkButton",None,3,None,"start",None,None,None),
+	(3,4,"GtkButton","select",3,None,"end",None,2,None),
 	(3,5,"GtkBox","mediaSearchBox",3,None,"title",None,1,None),
 	(3,6,"GtkSearchEntry","searchEntry",5,None,None,None,None,None),
 	(3,7,"GtkToggleButton","tv",5,None,None,None,1,None),
 	(3,8,"GtkToggleButton","movie",5,None,None,None,2,None),
-	(3,9,"GtkBox","results",2,None,None,None,1,None),
+	(3,9,"GtkBox","resultsBox",2,None,None,None,1,None),
 	(3,10,"GtkScrolledWindow",None,9,None,None,None,None,None),
 	(3,11,"GtkListView","resultsList",10,None,None,None,None,None),
 	(3,12,"GtkSignalListItemFactory",None,11,None,None,None,None,None),
 	(3,13,"GtkSingleSelection",None,11,None,None,None,None,None),
-	(3,14,"GListStore",None,13,None,None,None,None,None)
+	(3,14,"GListStore","results",13,None,None,None,None,None),
+	(3,15,"GtkButton","cancel",3,None,"start",None,None,None),
+	(3,16,"GtkBox","footer",2,None,None,None,2,None),
+	(3,17,"GtkLabel",None,16,None,None,None,None,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -167,10 +170,13 @@
 	(3,2,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
 	(3,2,"GtkWidget","vexpand","True",None,None,None,None,None,None,None,None,None),
 	(3,3,"AdwHeaderBar","decoration-layout","icon:close",None,None,None,None,None,None,None,None,None),
+	(3,3,"AdwHeaderBar","show-end-title-buttons","False",None,None,None,None,None,None,None,None,None),
 	(3,3,"GtkWidget","css-classes","flat",None,None,None,None,None,None,None,None,None),
-	(3,4,"GtkButton","icon-name","list-add-symbolic",None,None,None,None,None,None,None,None,None),
+	(3,4,"GtkButton","icon-name","emblem-ok-symbolic",None,None,None,None,None,None,None,None,None),
+	(3,4,"GtkWidget","css-classes","success\nraised",None,None,None,None,None,None,None,None,None),
 	(3,5,"GtkWidget","css-classes","linked",None,None,None,None,None,None,None,None,None),
 	(3,6,"GtkSearchEntry","placeholder-text","Search media",None,None,None,None,None,None,None,None,None),
+	(3,6,"GtkSearchEntry","search-delay","250",None,None,None,None,None,None,None,None,None),
 	(3,7,"GtkButton","icon-name","video-display-symbolic",None,None,None,None,None,None,None,None,None),
 	(3,7,"GtkToggleButton","active","True",None,None,None,None,None,None,None,None,None),
 	(3,8,"GtkButton","icon-name","emblem-videos-symbolic",None,None,None,None,None,None,None,None,None),
@@ -184,13 +190,27 @@
 	(3,11,"GtkListView","model",None,None,None,None,None,13,None,None,None,None),
 	(3,11,"GtkListView","show-separators","True",None,None,None,None,None,None,None,None,None),
 	(3,13,"GtkSingleSelection","model",None,None,None,None,None,14,None,None,None,None),
-	(3,14,"GListStore","item-type","MediaInfo",None,None,None,None,None,None,None,None,None)
+	(3,14,"GListStore","item-type","MediaInfo",None,None,None,None,None,None,None,None,None),
+	(3,15,"GtkButton","icon-name","window-close-symbolic",None,None,None,None,None,None,None,None,None),
+	(3,15,"GtkWidget","css-classes","error\nraised",None,None,None,None,None,None,None,None,None),
+	(3,16,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkLabel","label","Media info provided by &lt;a href=\"https://www.tmdb.org\"&gt;&lt;b&gt;TMDB&lt;/b&gt;&lt;/a&gt;",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkLabel","use-markup","True",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkWidget","halign","center",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkWidget","margin-bottom","12",None,None,None,None,None,None,None,None,None),
+	(3,17,"GtkWidget","margin-top","12",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),
 	(7,1,42,"GtkNativeDialog","response","onFilesAdded",None,None,None,None,None),
 	(27,1,94,"GtkSignalListItemFactory","bind","bindFileItem",None,None,None,None,None),
 	(28,1,94,"GtkSignalListItemFactory","setup","setupFileItem",None,None,None,None,None),
-	(51,1,205,"GtkButton","clicked","onMediaSearchOpen",None,None,None,None,None)
+	(51,1,205,"GtkButton","clicked","onMediaSearchOpen",None,None,None,None,None),
+	(52,3,6,"GtkSearchEntry","search-changed","onSearchChanged",None,None,None,None,None),
+	(53,3,7,"GtkToggleButton","toggled","onShowsToggled",None,None,None,None,None),
+	(54,3,8,"GtkToggleButton","toggled","onMoviesToggled",None,None,None,None,None),
+	(55,3,12,"GtkSignalListItemFactory","setup","setupResultItem",None,None,None,None,None),
+	(56,3,12,"GtkSignalListItemFactory","bind","bindResultItem",None,None,None,None,None)
   </object_signal>
 </cambalache-project>

@@ -17,9 +17,12 @@
           <object class="AdwHeaderBar">
             <property name="css-classes">flat</property>
             <property name="decoration-layout">icon:close</property>
+            <property name="show-end-title-buttons">False</property>
             <child type="start">
-              <object class="GtkButton">
-                <property name="icon-name">list-add-symbolic</property>
+              <object class="GtkButton" id="cancel">
+                <property name="css-classes">error
+raised</property>
+                <property name="icon-name">window-close-symbolic</property>
               </object>
             </child>
             <child type="title">
@@ -28,25 +31,36 @@
                 <child>
                   <object class="GtkSearchEntry" id="searchEntry">
                     <property name="placeholder-text">Search media</property>
+                    <property name="search-delay">250</property>
+                    <signal name="search-changed" handler="onSearchChanged"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="tv">
                     <property name="active">True</property>
                     <property name="icon-name">video-display-symbolic</property>
+                    <signal name="toggled" handler="onShowsToggled"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="movie">
                     <property name="icon-name">emblem-videos-symbolic</property>
+                    <signal name="toggled" handler="onMoviesToggled"/>
                   </object>
                 </child>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="select">
+                <property name="css-classes">success
+raised</property>
+                <property name="icon-name">emblem-ok-symbolic</property>
               </object>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkBox" id="results">
+          <object class="GtkBox" id="resultsBox">
             <property name="hexpand">True</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
@@ -58,12 +72,15 @@
                 <child>
                   <object class="GtkListView" id="resultsList">
                     <property name="factory">
-                      <object class="GtkSignalListItemFactory"/>
+                      <object class="GtkSignalListItemFactory">
+                        <signal name="setup" handler="setupResultItem"/>
+                        <signal name="bind" handler="bindResultItem"/>
+                      </object>
                     </property>
                     <property name="model">
                       <object class="GtkSingleSelection">
                         <property name="model">
-                          <object class="GListStore">
+                          <object class="GListStore" id="results">
                             <property name="item-type">MediaInfo</property>
                           </object>
                         </property>
@@ -72,6 +89,21 @@
                     <property name="show-separators">True</property>
                   </object>
                 </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="footer">
+            <property name="hexpand">True</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="halign">center</property>
+                <property name="hexpand">True</property>
+                <property name="label">Media info provided by &lt;a href="https://www.tmdb.org"&gt;&lt;b&gt;TMDB&lt;/b&gt;&lt;/a&gt;</property>
+                <property name="margin-bottom">12</property>
+                <property name="margin-top">12</property>
+                <property name="use-markup">True</property>
               </object>
             </child>
           </object>

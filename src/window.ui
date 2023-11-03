@@ -11,9 +11,15 @@
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
-        <property name="spacing">24</property>
+        <property name="spacing">48</property>
         <child>
           <object class="AdwHeaderBar">
+            <child type="end">
+              <object class="GtkButton" id="aboutButton">
+                <property name="css-classes">circular</property>
+                <property name="icon-name">help-about-symbolic</property>
+              </object>
+            </child>
             <child type="title">
               <object class="GtkBox">
                 <property name="spacing">6</property>
@@ -40,6 +46,86 @@
                       <object class="GtkSearchEntry" id="mediaSearchInput">
                         <property name="placeholder-text">Search for media</property>
                         <signal name="search-changed" handler="onMediaSearchChanged"/>
+                        <signal name="move-focus" handler="onMediaSearchStarted"/>
+                        <child>
+                          <object class="GtkPopover" id="mediaSearchPopup">
+                            <property name="autohide">False</property>
+                            <property name="css-classes">menu</property>
+                            <property name="height-request">320</property>
+                            <property name="width-request">480</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="margin-bottom">12</property>
+                                <property name="margin-end">12</property>
+                                <property name="margin-start">12</property>
+                                <property name="margin-top">12</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkBox" id="resultsHeader">
+                                    <child>
+                                      <object class="GtkButton" id="resultsBack">
+                                        <property name="css-classes">flat</property>
+                                        <property name="icon-name">go-previous-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="resultsTitle">
+                                        <property name="css-classes">heading</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="label">Movies</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="resultsAdd">
+                                        <property name="css-classes">flat</property>
+                                        <property name="icon-name">list-add-symbolic</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwViewStack">
+                                    <child>
+                                      <object class="GtkScrolledWindow">
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <child>
+                                          <object class="GtkListView" id="resultsList">
+                                            <property name="factory">
+                                              <object class="GtkSignalListItemFactory">
+                                                <signal name="setup" handler="setupSearchItem"/>
+                                                <signal name="bind" handler="bindSearchItem"/>
+                                              </object>
+                                            </property>
+                                            <property name="model">
+                                              <object class="GtkSingleSelection">
+                                                <property name="model">
+                                                  <object class="GListStore">
+                                                    <property name="item-type">MediaInfo</property>
+                                                  </object>
+                                                </property>
+                                              </object>
+                                            </property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkScrolledWindow">
+                                        <property name="hexpand">True</property>
+                                        <property name="vexpand">True</property>
+                                        <child>
+                                          <object class="GtkListView" id="resultsDetails"/>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <child>
@@ -94,8 +180,8 @@
         <child>
           <object class="GtkBox" id="table">
             <property name="hexpand">True</property>
-            <property name="margin-end">12</property>
-            <property name="margin-start">12</property>
+            <property name="margin-end">48</property>
+            <property name="margin-start">48</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <property name="vexpand">True</property>
@@ -148,6 +234,7 @@
                 <child>
                   <object class="AdwLeaflet">
                     <property name="hexpand">True</property>
+                    <property name="transition-type">slide</property>
                     <child>
                       <object class="GtkListView">
                         <property name="css-classes">rich-list</property>
@@ -197,15 +284,16 @@
           </object>
         </child>
         <child>
-          <object class="GtkSeparator">
-            <property name="opacity">0.0</property>
+          <object class="GtkSeparator" id="spacer">
+            <property name="css-classes">spacer</property>
           </object>
         </child>
         <child>
           <object class="GtkListBox">
             <property name="activate-on-single-click">False</property>
             <property name="css-classes">rich-list
-boxed-list</property>
+boxed-list
+view</property>
             <property name="halign">center</property>
             <property name="selection-mode">none</property>
             <property name="visible">False</property>
@@ -270,76 +358,5 @@ boxed-list</property>
     <property name="modal">True</property>
     <property name="select-multiple">True</property>
     <signal name="response" handler="onFilesAdded"/>
-  </object>
-  <object class="GtkPopover" id="searchPop">
-    <property name="height-request">320</property>
-    <property name="width-request">480</property>
-    <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
-        <child>
-          <object class="GtkBox" id="resultsHeader">
-            <child>
-              <object class="GtkButton" id="resultsBack">
-                <property name="css-classes">flat</property>
-                <property name="icon-name">go-previous-symbolic</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="resultsTitle">
-                <property name="css-classes">heading</property>
-                <property name="hexpand">True</property>
-                <property name="label">Movies</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="resultsAdd">
-                <property name="css-classes">flat</property>
-                <property name="icon-name">list-add-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwViewStack">
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <child>
-                  <object class="GtkListView" id="resultsList">
-                    <property name="factory">
-                      <object class="GtkSignalListItemFactory">
-                        <signal name="setup" handler="setupSearchItem"/>
-                        <signal name="bind" handler="bindSearchItem"/>
-                      </object>
-                    </property>
-                    <property name="model">
-                      <object class="GtkSingleSelection">
-                        <property name="model">
-                          <object class="GListStore">
-                            <property name="item-type">MediaData</property>
-                          </object>
-                        </property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="hexpand">True</property>
-                <property name="vexpand">True</property>
-                <child>
-                  <object class="GtkListView" id="resultsDetails"/>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>

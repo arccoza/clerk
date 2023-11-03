@@ -1,12 +1,20 @@
 import GObject from "gi://GObject"
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
+import { MediaInfo } from "./gobjects"
 
 
 export const ClerkWindow = GObject.registerClass({
   GTypeName: "ClerkWindow",
   Template: "resource:///com/arccoza/clerk/window.ui",
-  InternalChildren: ["filesAdd", "mediaSearchInput", "filesUpdate", "filePicker", "files"],
+  InternalChildren: [
+    "filesAdd",
+    "filesUpdate",
+    "filePicker",
+    "files",
+    "mediaSearchInput",
+    "mediaSearchPopup",
+  ],
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {
     super({ application })
@@ -18,10 +26,6 @@ export const ClerkWindow = GObject.registerClass({
     // const res = await this._filePicker.open_multiple_finish()
     // console.log("--->", res)
     this._filePicker.show()
-  }
-
-  onMediaSearchChanged(button) {
-    console.log("onMediaSearchChanged", button)
   }
 
   onFilesUpdate(button) {
@@ -49,6 +53,15 @@ export const ClerkWindow = GObject.registerClass({
     row.icon_name = "checkbox"
     row.title = file.get_basename()
     row.subtitle = file.get_path()
+  }
+
+  onMediaSearchStarted(entry) {
+    console.log("onMediaSearchStarted", entry)
+    this._mediaSearchPopup.show()
+  }
+
+  onMediaSearchChanged(entry) {
+    console.log("onMediaSearchChanged", entry)
   }
 
   setupSearchItem(listView, listItem) {

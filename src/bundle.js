@@ -208,19 +208,41 @@ Object.entries({ atob, btoa, fetch, WebSocket }).forEach(([key, value]) => {
 });
 
 // src/main.js
-import GObject2 from "gi://GObject";
-import Gio2 from "gi://Gio";
+import GObject3 from "gi://GObject";
+import Gio3 from "gi://Gio";
 import Gtk2 from "gi://Gtk?version=4.0";
 import Adw2 from "gi://Adw?version=1";
 
 // src/window.js
-import GObject from "gi://GObject";
+import GObject2 from "gi://GObject";
 import Gtk from "gi://Gtk";
 import Adw from "gi://Adw";
-var ClerkWindow = GObject.registerClass({
+
+// src/gobjects.js
+import Gio2 from "gi://Gio";
+import GObject from "gi://GObject";
+var MediaInfo = GObject.registerClass({
+  GTypeName: "MediaInfo",
+  Properties: {
+    name: GObject.ParamSpec.string("name", "Name", "Name of the file", GObject.ParamFlags.READWRITE, ""),
+    icon: GObject.ParamSpec.object("icon", "Icon", "Icon for the file", GObject.ParamFlags.READWRITE, Gio2.Icon),
+    type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio2.FileType, Gio2.FileType.UNKNOWN)
+  }
+}, class extends GObject.Object {
+});
+
+// src/window.js
+var ClerkWindow = GObject2.registerClass({
   GTypeName: "ClerkWindow",
   Template: "resource:///com/arccoza/clerk/window.ui",
-  InternalChildren: ["filesAdd", "mediaSearchInput", "filesUpdate", "filePicker", "files"]
+  InternalChildren: [
+    "filesAdd",
+    "filesUpdate",
+    "filePicker",
+    "files",
+    "mediaSearchInput",
+    "mediaSearchPopup"
+  ]
 }, class ClerkWindow2 extends Adw.ApplicationWindow {
   constructor(application) {
     super({ application });
@@ -228,9 +250,6 @@ var ClerkWindow = GObject.registerClass({
   async onFilesAdd(button) {
     console.log("onFilesAdd");
     this._filePicker.show();
-  }
-  onMediaSearchChanged(button) {
-    console.log("onMediaSearchChanged", button);
   }
   onFilesUpdate(button) {
     console.log("onFilesUpdate", button);
@@ -254,6 +273,13 @@ var ClerkWindow = GObject.registerClass({
     row.title = file.get_basename();
     row.subtitle = file.get_path();
   }
+  onMediaSearchStarted(entry) {
+    console.log("onMediaSearchStarted", entry);
+    this._mediaSearchPopup.show();
+  }
+  onMediaSearchChanged(entry) {
+    console.log("onMediaSearchChanged", entry);
+  }
   setupSearchItem(listView, listItem) {
   }
   bindSearchItem(listView, listItem) {
@@ -274,17 +300,17 @@ var ClerkWindow = GObject.registerClass({
 // src/main.js
 pkg.initGettext();
 pkg.initFormat();
-var ClerkApplication = GObject2.registerClass(
+var ClerkApplication = GObject3.registerClass(
   class ClerkApplication2 extends Adw2.Application {
     constructor() {
-      super({ application_id: "com.arccoza.clerk", flags: Gio2.ApplicationFlags.DEFAULT_FLAGS });
-      const quit_action = new Gio2.SimpleAction({ name: "quit" });
+      super({ application_id: "com.arccoza.clerk", flags: Gio3.ApplicationFlags.DEFAULT_FLAGS });
+      const quit_action = new Gio3.SimpleAction({ name: "quit" });
       quit_action.connect("activate", (action) => {
         this.quit();
       });
       this.add_action(quit_action);
       this.set_accels_for_action("app.quit", ["<primary>q"]);
-      const show_about_action = new Gio2.SimpleAction({ name: "about" });
+      const show_about_action = new Gio3.SimpleAction({ name: "about" });
       show_about_action.connect("activate", (action) => {
         let aboutParams = {
           transient_for: this.active_window,

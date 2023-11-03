@@ -3,6 +3,8 @@ import GObject from "gi://GObject"
 import Gio from "gi://Gio"
 import Gtk from "gi://Gtk?version=4.0"
 import Adw from "gi://Adw?version=1"
+import { MediaInfo } from "./gobjects"
+import { MediaPicker } from "./MediaPicker"
 import { ClerkWindow } from "./window.js"
 
 

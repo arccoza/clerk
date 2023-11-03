@@ -240,8 +240,7 @@ var ClerkWindow = GObject2.registerClass({
     "filesUpdate",
     "filePicker",
     "files",
-    "mediaSearchInput",
-    "mediaSearchPopup"
+    "mediaPicker"
   ]
 }, class ClerkWindow2 extends Adw.ApplicationWindow {
   constructor(application) {
@@ -273,9 +272,9 @@ var ClerkWindow = GObject2.registerClass({
     row.title = file.get_basename();
     row.subtitle = file.get_path();
   }
-  onMediaSearchStarted(entry) {
-    console.log("onMediaSearchStarted", entry);
-    this._mediaSearchPopup.show();
+  onMediaSearchOpen(button) {
+    console.log("onMediaSearchOpen", button);
+    this._mediaPicker.show();
   }
   onMediaSearchChanged(entry) {
     console.log("onMediaSearchChanged", entry);

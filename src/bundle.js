@@ -24,7 +24,7 @@ function promiseTask(object, method, finish, ...args) {
 import Soup from "gi://Soup?version=3.0";
 import GLib2 from "gi://GLib";
 import Gio from "gi://Gio";
-async function fetch(url, options = {}) {
+async function fetch2(url, options = {}) {
   if (typeof url === "object") {
     options = url;
     url = options.url;
@@ -32,10 +32,7 @@ async function fetch(url, options = {}) {
   const session = new Soup.Session();
   const method = options.method || "GET";
   const uri = GLib2.Uri.parse(url, GLib2.UriFlags.NONE);
-  const message = new Soup.Message({
-    method,
-    uri
-  });
+  const message = Soup.Message.new(method, url);
   const headers = options.headers || {};
   const request_headers = message.get_request_headers();
   for (const header in headers) {
@@ -202,7 +199,7 @@ var WebSocket = class {
 Signals.addSignalMethods(WebSocket.prototype);
 
 // src/troll/src/globals.js
-Object.entries({ atob, btoa, fetch, WebSocket }).forEach(([key, value]) => {
+Object.entries({ atob, btoa, fetch: fetch2, WebSocket }).forEach(([key, value]) => {
   if (!globalThis[key])
     globalThis[key] = value;
 });
@@ -219,9 +216,11 @@ import GObject from "gi://GObject";
 var MediaInfo = GObject.registerClass({
   GTypeName: "MediaInfo",
   Properties: {
+    id: GObject.ParamSpec.double("id", "ID", "ID of the item", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, 0),
     name: GObject.ParamSpec.string("name", "Name", "Name of the file", GObject.ParamFlags.READWRITE, ""),
-    icon: GObject.ParamSpec.object("icon", "Icon", "Icon for the file", GObject.ParamFlags.READWRITE, Gio2.Icon),
-    type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio2.FileType, Gio2.FileType.UNKNOWN)
+    date: GObject.ParamSpec.string("date", "Date", "Release date", GObject.ParamFlags.READWRITE, "")
+    // icon: GObject.ParamSpec.object("icon", "Icon", "Icon for the file", GObject.ParamFlags.READWRITE, Gio.Icon),
+    // type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio.FileType, Gio.FileType.UNKNOWN),
   }
 }, class extends GObject.Object {
 });
@@ -230,14 +229,100 @@ var MediaInfo = GObject.registerClass({
 import GObject2 from "gi://GObject";
 import Gtk from "gi://Gtk";
 import Adw from "gi://Adw";
+
+// src/media-api/utils.js
+function makeSearchParams(obj) {
+  return encodeURI(
+    Object.entries(obj).filter(([k, v]) => v != null && v !== "").map(([k, v]) => `${k}=${v}`).join("&")
+  );
+}
+
+// src/media-api/tmdb.js
+var TMDB = class {
+  _baseUrl = "https://api.themoviedb.org/3";
+  constructor(language = "en-US") {
+    this._language = language;
+  }
+  async search(type, query, page = 1) {
+    if (!query) {
+      throw "Query empty error";
+    }
+    const params = makeSearchParams({
+      query: query.trim(),
+      include_adult: false,
+      language: this._language,
+      page
+    });
+    const url = `${this._baseUrl}/search/${type}?${params}`;
+    console.log("------>>>", url);
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTliM2M1M2JjNzY5N2M0NWQzZGQ1ZmYzYzE3ZDFjMCIsInN1YiI6IjU4MmQyYTMxOTI1MTQxMDk1ZDAwMjY2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.a1p8_PtthYMxddvjQpCedWB93BBWKXKhuLWjAwHmzUk"
+      }
+    };
+    return fetch(url, options).then((res) => res.json());
+  }
+};
+
+// src/MediaPicker.js
 var MediaPicker = GObject2.registerClass({
   GTypeName: "MediaPicker",
   Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
-  InternalChildren: []
+  InternalChildren: [
+    "typeStack",
+    "shows",
+    "movies"
+  ]
 }, class MediaPicker2 extends Adw.Window {
   constructor(window) {
-    console.log("---------->", window);
     super();
+    this._mediaApi = new TMDB();
+  }
+  onShowsToggled(button) {
+  }
+  onMoviesToggled(button) {
+  }
+  onSearchChanged(entry) {
+    const query = entry.get_text();
+    const kind = this._typeStack.get_visible_child_name();
+    console.log("==>>>>>>>", kind);
+    if (!query || !kind) {
+      return;
+    }
+    const store = kind === "tv" ? this._shows : this._movies;
+    this._mediaApi.search(kind, query).then((res) => {
+      store.remove_all();
+      console.log("==++>>", res);
+      for (const result of res.results) {
+        store.append(new MediaInfo({
+          id: result.id || -1,
+          name: result.name || result.original_name || result.title || result.original_title || "unknown",
+          date: result.date || result.first_air_date || result.release_date || "unknown"
+        }));
+      }
+    }).catch((err) => console.error(err));
+  }
+  setupShowItem(listView, listItem) {
+    const row = new Adw.ActionRow();
+    listItem.child = row;
+  }
+  bindShowItem(listView, listItem) {
+    const result = listItem.item;
+    const row = listItem.child;
+    row.title = result.name.replace("&", "&amp;");
+    row.subtitle = result.date;
+  }
+  setupMovieItem(listView, listItem) {
+    const row = new Adw.ActionRow();
+    listItem.child = row;
+  }
+  bindMovieItem(listView, listItem) {
+    const result = listItem.item;
+    const row = listItem.child;
+    row.title = result.name.replace("&", "&amp;");
+    row.subtitle = result.date;
   }
 });
 
@@ -310,6 +395,7 @@ var ClerkWindow = GObject3.registerClass({
 });
 
 // src/main.js
+import Soup3 from "gi://Soup";
 pkg.initGettext();
 pkg.initFormat();
 var ClerkApplication = GObject4.registerClass(

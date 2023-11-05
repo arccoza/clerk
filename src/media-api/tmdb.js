@@ -14,10 +14,10 @@ export class TMDB {
     }
 
     const params = makeSearchParams({
-      query,
-      page,
-      language: this._language,
+      query: query.trim(),
       include_adult: false,
+      language: this._language,
+      page,
     })
 
     const url = `${this._baseUrl}/search/${type}?${params}`

@@ -12,12 +12,13 @@ export default async function fetch(url, options = {}) {
   const session = new Soup.Session();
   const method = options.method || "GET";
 
-  const uri = GLib.Uri.parse(url, GLib.UriFlags.NONE);
+  // const uri = GLib.Uri.parse(url, GLib.UriFlags.NONE);
 
-  const message = new Soup.Message({
-    method,
-    uri,
-  });
+  // const message = new Soup.Message({
+  //   method,
+  //   uri,
+  // });
+  const message = Soup.Message.new(method, url)
   const headers = options.headers || {};
 
   const request_headers = message.get_request_headers();

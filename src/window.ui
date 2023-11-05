@@ -166,7 +166,6 @@ dim-label</property>
                             </property>
                           </object>
                         </property>
-                        <property name="show-separators">True</property>
                         <property name="width-request">320</property>
                       </object>
                     </child>
@@ -184,7 +183,6 @@ dim-label</property>
                             </property>
                           </object>
                         </property>
-                        <property name="show-separators">True</property>
                         <property name="width-request">320</property>
                       </object>
                     </child>

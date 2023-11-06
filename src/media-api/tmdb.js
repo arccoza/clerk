@@ -35,12 +35,14 @@ export class TMDB {
       .then((res) => res.json())
   }
 
-  async details(type, id) {
+  async details(type, id, seasonNum) {
     if (!id) {
       throw "Missing id"
     }
 
-    const url = `${this._baseUrl}/${type}/${id}?language=${this._language}`
+    const season = seasonNum != null ? `/season/${seasonNum}` : ""
+
+    const url = `${this._baseUrl}/${type}/${id}${season}?language=${this._language}`
 
     const options = {
       method: "GET",

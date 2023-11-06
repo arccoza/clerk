@@ -9,8 +9,10 @@ export const MediaPicker = GObject.registerClass({
   GTypeName: "MediaPicker",
   Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
   InternalChildren: [
-    "typeStack",
+    "searchEntry",
+    "stack",
     "shows",
+    "seasons",
     "movies",
   ],
 }, class MediaPicker extends Adw.Window {
@@ -29,9 +31,7 @@ export const MediaPicker = GObject.registerClass({
 
   onSearchChanged(entry) {
     const query = entry.get_text()
-    const kind = this._typeStack.get_visible_child_name()
-
-    console.log("==>>>>>>>", kind)
+    const kind = this._stack.get_visible_child_name()
 
     if (!query || !kind) {
       return
@@ -57,10 +57,30 @@ export const MediaPicker = GObject.registerClass({
 
   setupShowItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    // const row = new Gtk.Label()
     listItem.child = row
   }
 
   bindShowItem(listView, listItem) {
+    const result = listItem.item
+    const row = listItem.child
+    row.title = result.name.replace("&", "&amp;")
+    row.subtitle = result.date
+  }
+
+  onShowSelect(model, position, count) {
+    const id = model.get_selected_item().id
+    this._mediaApi.details("tv", id, 1)
+      .then((details) => console.log("====>>>", details))
+      .catch((err) => console.error(err))
+  }
+
+  setupSeasonItem(listView, listItem) {
+    const row = new Adw.ActionRow()
+    listItem.child = row
+  }
+
+  bindSeasonItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
     row.title = result.name.replace("&", "&amp;")
@@ -77,5 +97,10 @@ export const MediaPicker = GObject.registerClass({
     const row = listItem.child
     row.title = result.name.replace("&", "&amp;")
     row.subtitle = result.date
+  }
+
+  onSwitchPage(stack) {
+    console.log("==>>", stack.visible_child_name)
+    this._searchEntry.set_text("")
   }
 })

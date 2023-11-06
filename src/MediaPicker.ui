@@ -17,9 +17,9 @@
             <property name="decoration-layout">icon:close</property>
             <property name="show-end-title-buttons">False</property>
             <child type="title">
-              <object class="GtkStackSwitcher" id="typeSwitch">
+              <object class="GtkStackSwitcher" id="switch">
                 <property name="css-classes">linked</property>
-                <property name="stack">typeStack</property>
+                <property name="stack">stack</property>
               </object>
             </child>
             <child type="start">
@@ -52,8 +52,15 @@ raised</property>
         </child>
         <child>
           <object class="GtkActionBar" id="searchBar">
+            <child type="start">
+              <object class="GtkButton" id="back">
+                <property name="css-classes">raised</property>
+                <property name="icon-name">carousel-arrow-previous-symbolic</property>
+                <property name="sensitive">False</property>
+              </object>
+            </child>
             <child type="center">
-              <object class="GtkSearchEntry">
+              <object class="GtkSearchEntry" id="searchEntry">
                 <property name="placeholder-text">Search for media</property>
                 <property name="search-delay">250</property>
                 <property name="width-chars">30</property>
@@ -63,57 +70,11 @@ raised</property>
           </object>
         </child>
         <child>
-          <object class="GtkStack" id="typeStack">
+          <object class="GtkStack" id="stack">
             <property name="margin-top">12</property>
             <property name="transition-type">slide-left-right</property>
             <property name="vexpand">True</property>
-            <child>
-              <object class="GtkStackPage" id="showsPage">
-                <property name="child">
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkBox" id="showsBox">
-                        <property name="hexpand">True</property>
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">6</property>
-                        <property name="vexpand">True</property>
-                        <child>
-                          <object class="GtkScrolledWindow">
-                            <property name="hexpand">True</property>
-                            <property name="vexpand">True</property>
-                            <child>
-                              <object class="GtkListView" id="showsList">
-                                <property name="css-classes">navigation-sidebar</property>
-                                <property name="factory">
-                                  <object class="GtkSignalListItemFactory">
-                                    <signal name="setup" handler="setupShowItem"/>
-                                    <signal name="bind" handler="bindShowItem"/>
-                                  </object>
-                                </property>
-                                <property name="margin-end">12</property>
-                                <property name="margin-start">12</property>
-                                <property name="model">
-                                  <object class="GtkSingleSelection">
-                                    <property name="model">
-                                      <object class="GListStore" id="shows">
-                                        <property name="item-type">MediaInfo</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </property>
-                <property name="name">tv</property>
-                <property name="title">Shows</property>
-              </object>
-            </child>
+            <signal name="notify::visible-child" handler="onSwitchPage"/>
             <child>
               <object class="GtkStackPage" id="moviesPage">
                 <property name="child">
@@ -159,6 +120,107 @@ raised</property>
                 </property>
                 <property name="name">movie</property>
                 <property name="title">Movies</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage" id="showsPage">
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="hexpand">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkBox" id="showsBox">
+                        <property name="hexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <property name="vexpand">True</property>
+                        <child>
+                          <object class="GtkScrolledWindow">
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                              <object class="GtkListView" id="showsList">
+                                <property name="css-classes">navigation-sidebar</property>
+                                <property name="factory">
+                                  <object class="GtkSignalListItemFactory">
+                                    <signal name="setup" handler="setupShowItem"/>
+                                    <signal name="bind" handler="bindShowItem"/>
+                                  </object>
+                                </property>
+                                <property name="margin-end">12</property>
+                                <property name="margin-start">12</property>
+                                <property name="model">
+                                  <object class="GtkSingleSelection">
+                                    <property name="autoselect">False</property>
+                                    <property name="model">
+                                      <object class="GListStore" id="shows">
+                                        <property name="item-type">MediaInfo</property>
+                                      </object>
+                                    </property>
+                                    <signal name="selection-changed" handler="onShowSelect"/>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="name">tv</property>
+                <property name="title">Shows</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage" id="seasonsPage">
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="hexpand">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="vexpand">True</property>
+                    <child>
+                      <object class="GtkBox" id="seasonsBox">
+                        <property name="hexpand">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <property name="vexpand">True</property>
+                        <child>
+                          <object class="GtkScrolledWindow">
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <child>
+                              <object class="GtkListView" id="seasonsList">
+                                <property name="css-classes">navigation-sidebar</property>
+                                <property name="factory">
+                                  <object class="GtkSignalListItemFactory">
+                                    <signal name="setup" handler="setupSeasonItem"/>
+                                    <signal name="bind" handler="bindSeasonItem"/>
+                                  </object>
+                                </property>
+                                <property name="margin-end">12</property>
+                                <property name="margin-start">12</property>
+                                <property name="model">
+                                  <object class="GtkMultiSelection">
+                                    <property name="model">
+                                      <object class="GListStore" id="seasons">
+                                        <property name="item-type">MediaInfo</property>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="name">seasons</property>
+                <property name="title">Seasons</property>
+                <property name="visible">False</property>
               </object>
             </child>
           </object>

@@ -31,7 +31,6 @@ async function fetch2(url, options = {}) {
   }
   const session = new Soup.Session();
   const method = options.method || "GET";
-  const uri = GLib2.Uri.parse(url, GLib2.UriFlags.NONE);
   const message = Soup.Message.new(method, url);
   const headers = options.headers || {};
   const request_headers = message.get_request_headers();
@@ -240,6 +239,10 @@ function makeSearchParams(obj) {
 // src/media-api/tmdb.js
 var TMDB = class {
   _baseUrl = "https://api.themoviedb.org/3";
+  _headers = {
+    accept: "application/json",
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTliM2M1M2JjNzY5N2M0NWQzZGQ1ZmYzYzE3ZDFjMCIsInN1YiI6IjU4MmQyYTMxOTI1MTQxMDk1ZDAwMjY2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.a1p8_PtthYMxddvjQpCedWB93BBWKXKhuLWjAwHmzUk"
+  };
   constructor(language = "en-US") {
     this._language = language;
   }
@@ -254,13 +257,21 @@ var TMDB = class {
       page
     });
     const url = `${this._baseUrl}/search/${type}?${params}`;
-    console.log("------>>>", url);
     const options = {
       method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTliM2M1M2JjNzY5N2M0NWQzZGQ1ZmYzYzE3ZDFjMCIsInN1YiI6IjU4MmQyYTMxOTI1MTQxMDk1ZDAwMjY2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.a1p8_PtthYMxddvjQpCedWB93BBWKXKhuLWjAwHmzUk"
-      }
+      headers: this._headers
+    };
+    return fetch(url, options).then((res) => res.json());
+  }
+  async details(type, id, seasonNum) {
+    if (!id) {
+      throw "Missing id";
+    }
+    const season = seasonNum != null ? `/season/${seasonNum}` : "";
+    const url = `${this._baseUrl}/${type}/${id}${season}?language=${this._language}`;
+    const options = {
+      method: "GET",
+      headers: this._headers
     };
     return fetch(url, options).then((res) => res.json());
   }
@@ -271,8 +282,10 @@ var MediaPicker = GObject2.registerClass({
   GTypeName: "MediaPicker",
   Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
   InternalChildren: [
-    "typeStack",
+    "searchEntry",
+    "stack",
     "shows",
+    "seasons",
     "movies"
   ]
 }, class MediaPicker2 extends Adw.Window {
@@ -286,8 +299,7 @@ var MediaPicker = GObject2.registerClass({
   }
   onSearchChanged(entry) {
     const query = entry.get_text();
-    const kind = this._typeStack.get_visible_child_name();
-    console.log("==>>>>>>>", kind);
+    const kind = this._stack.get_visible_child_name();
     if (!query || !kind) {
       return;
     }
@@ -314,6 +326,20 @@ var MediaPicker = GObject2.registerClass({
     row.title = result.name.replace("&", "&amp;");
     row.subtitle = result.date;
   }
+  onShowSelect(model, position, count) {
+    const id = model.get_selected_item().id;
+    this._mediaApi.details("tv", id, 1).then((details) => console.log("====>>>", details)).catch((err) => console.error(err));
+  }
+  setupSeasonItem(listView, listItem) {
+    const row = new Adw.ActionRow();
+    listItem.child = row;
+  }
+  bindSeasonItem(listView, listItem) {
+    const result = listItem.item;
+    const row = listItem.child;
+    row.title = result.name.replace("&", "&amp;");
+    row.subtitle = result.date;
+  }
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow();
     listItem.child = row;
@@ -323,6 +349,10 @@ var MediaPicker = GObject2.registerClass({
     const row = listItem.child;
     row.title = result.name.replace("&", "&amp;");
     row.subtitle = result.date;
+  }
+  onSwitchPage(stack) {
+    console.log("==>>", stack.visible_child_name);
+    this._searchEntry.set_text("");
   }
 });
 

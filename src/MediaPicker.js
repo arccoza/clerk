@@ -70,7 +70,7 @@ export const MediaPicker = GObject.registerClass({
 
   onShowSelect(model, position, count) {
     const id = model.get_selected_item().id
-    this._mediaApi.details("tv", id, 1)
+    this._mediaApi.details("tv", id)
       .then((details) => console.log("====>>>", details))
       .catch((err) => console.error(err))
   }

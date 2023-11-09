@@ -217,7 +217,11 @@ var MediaInfo = GObject.registerClass({
   Properties: {
     id: GObject.ParamSpec.double("id", "ID", "ID of the item", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, 0),
     name: GObject.ParamSpec.string("name", "Name", "Name of the file", GObject.ParamFlags.READWRITE, ""),
-    date: GObject.ParamSpec.string("date", "Date", "Release date", GObject.ParamFlags.READWRITE, "")
+    date: GObject.ParamSpec.string("date", "Date", "Release date", GObject.ParamFlags.READWRITE, ""),
+    seasonName: GObject.ParamSpec.string("season-name", "Season Name", "The season name", GObject.ParamFlags.READWRITE, ""),
+    seasonNumber: GObject.ParamSpec.double("season-number", "Season Number", "The season number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
+    episodeName: GObject.ParamSpec.string("episode-name", "Episode Name", "The episode name", GObject.ParamFlags.READWRITE, ""),
+    episodeNumber: GObject.ParamSpec.double("episode-number", "Episode Number", "The episode number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1)
     // icon: GObject.ParamSpec.object("icon", "Icon", "Icon for the file", GObject.ParamFlags.READWRITE, Gio.Icon),
     // type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio.FileType, Gio.FileType.UNKNOWN),
   }
@@ -328,7 +332,7 @@ var MediaPicker = GObject2.registerClass({
   }
   onShowSelect(model, position, count) {
     const id = model.get_selected_item().id;
-    this._mediaApi.details("tv", id, 1).then((details) => console.log("====>>>", details)).catch((err) => console.error(err));
+    this._mediaApi.details("tv", id).then((details) => console.log("====>>>", details)).catch((err) => console.error(err));
   }
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow();

@@ -58,18 +58,6 @@ export const ClerkWindow = GObject.registerClass({
     this._mediaPicker.show()
   }
 
-  onMediaSearchChanged(entry) {
-    console.log("onMediaSearchChanged", entry)
-  }
-
-  setupSearchItem(listView, listItem) {
-
-  }
-
-  bindSearchItem(listView, listItem) {
-    
-  }
-
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1000; i++) {
       console.log("onFilesAdded", file, file.get_basename())

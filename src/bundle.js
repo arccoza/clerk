@@ -205,7 +205,7 @@ Object.entries({ atob, btoa, fetch: fetch2, WebSocket }).forEach(([key, value]) 
 
 // src/main.js
 import GObject4 from "gi://GObject";
-import Gio3 from "gi://Gio";
+import Gio4 from "gi://Gio";
 import Gtk3 from "gi://Gtk?version=4.0";
 import Adw3 from "gi://Adw?version=1";
 
@@ -230,6 +230,7 @@ var MediaInfo = GObject.registerClass({
 
 // src/MediaPicker.js
 import GObject2 from "gi://GObject";
+import Gio3 from "gi://Gio";
 import Gtk from "gi://Gtk";
 import Adw from "gi://Adw";
 
@@ -291,11 +292,28 @@ var MediaPicker = GObject2.registerClass({
     "shows",
     "seasons",
     "movies"
-  ]
+  ],
+  Signals: {
+    "cancelled": {
+      param_types: []
+    },
+    "selected": {
+      param_types: [Gio3.ListStore]
+    }
+  }
 }, class MediaPicker2 extends Adw.Window {
   constructor(window) {
     super();
     this._mediaApi = new TMDB();
+  }
+  onCancel(button) {
+    console.log("onCancel");
+    this.emit("cancelled");
+  }
+  onSelect(button) {
+    console.log("onSelect");
+    const list = Gio3.ListStore.new(MediaInfo);
+    this.emit("selected", list);
   }
   onShowsToggled(button) {
   }
@@ -377,6 +395,8 @@ var ClerkWindow = GObject3.registerClass({
 }, class ClerkWindow2 extends Adw2.ApplicationWindow {
   constructor(application) {
     super({ application });
+    this._mediaPicker.connect("cancelled", (picker) => console.log("--->>> Received cancelled!!!", picker));
+    this._mediaPicker.connect("selected", (picker, list) => console.log("--->>> Received selected!!!", picker, list));
   }
   async onFilesAdd(button) {
     console.log("onFilesAdd");
@@ -408,13 +428,13 @@ var ClerkWindow = GObject3.registerClass({
     console.log("onMediaSearchOpen", button);
     this._mediaPicker.show();
   }
-  onMediaSearchChanged(entry) {
-    console.log("onMediaSearchChanged", entry);
-  }
-  setupSearchItem(listView, listItem) {
-  }
-  bindSearchItem(listView, listItem) {
-  }
+  // onMediaSearchChanged(entry) {
+  //   console.log("onMediaSearchChanged", entry)
+  // }
+  // setupSearchItem(listView, listItem) {
+  // }
+  // bindSearchItem(listView, listItem) {
+  // }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {
       console.log("onFilesAdded", file, file.get_basename());
@@ -435,14 +455,14 @@ pkg.initFormat();
 var ClerkApplication = GObject4.registerClass(
   class ClerkApplication2 extends Adw3.Application {
     constructor() {
-      super({ application_id: "com.arccoza.clerk", flags: Gio3.ApplicationFlags.DEFAULT_FLAGS });
-      const quit_action = new Gio3.SimpleAction({ name: "quit" });
+      super({ application_id: "com.arccoza.clerk", flags: Gio4.ApplicationFlags.DEFAULT_FLAGS });
+      const quit_action = new Gio4.SimpleAction({ name: "quit" });
       quit_action.connect("activate", (action) => {
         this.quit();
       });
       this.add_action(quit_action);
       this.set_accels_for_action("app.quit", ["<primary>q"]);
-      const show_about_action = new Gio3.SimpleAction({ name: "about" });
+      const show_about_action = new Gio4.SimpleAction({ name: "about" });
       show_about_action.connect("activate", (action) => {
         let aboutParams = {
           transient_for: this.active_window,

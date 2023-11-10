@@ -16,6 +16,9 @@ export const ClerkWindow = GObject.registerClass({
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {
     super({ application })
+
+    this._mediaPicker.connect("cancelled", onMediaCancelled)
+    this._mediaPicker.connect("selected", onMediaAdded)
   }
 
   async onFilesAdd(button) {
@@ -56,6 +59,14 @@ export const ClerkWindow = GObject.registerClass({
   onMediaSearchOpen(button) {
     console.log("onMediaSearchOpen", button)
     this._mediaPicker.show()
+  }
+
+  onMediaCancelled(picker) {
+    picker.hide()
+  }
+
+  onMediaAdded(picker, list) {
+
   }
 
   addFiles(files) {

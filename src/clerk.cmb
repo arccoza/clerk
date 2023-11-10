@@ -89,7 +89,6 @@
 	(3,76,"GtkSignalListItemFactory",None,75,None,None,None,None,None),
 	(3,77,"GtkMultiSelection",None,75,None,None,None,None,None),
 	(3,78,"GListStore","seasons",77,None,None,None,None,None),
-	(3,79,"(external)","30",None,None,None,None,None,None),
 	(3,80,"GtkStackPage","showsPage",30,None,None,None,1,None),
 	(3,81,"GtkBox",None,80,None,None,None,None,None),
 	(3,82,"GtkBox","showsBox",81,None,None,None,None,None),
@@ -288,6 +287,8 @@
 	(69,3,85,"GtkSignalListItemFactory","setup","setupShowItem",None,None,None,None,None),
 	(70,3,85,"GtkSignalListItemFactory","bind","bindShowItem",None,None,None,None,None),
 	(71,3,86,"GtkSelectionModel","selection-changed","onShowSelect",None,None,None,None,None),
-	(74,3,30,"GObject","notify","onSwitchPage","visible-child",None,None,None,None)
+	(74,3,30,"GObject","notify","onSwitchPage","visible-child",None,None,None,None),
+	(75,3,15,"GtkButton","clicked","onCancel",None,None,None,None,None),
+	(76,3,4,"GtkButton","clicked","onSelect",None,None,None,None,None)
   </object_signal>
 </cambalache-project>

@@ -1,4 +1,5 @@
 import GObject from "gi://GObject"
+import Gio from 'gi://Gio'
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
 import { TMDB } from "./media-api"
@@ -15,10 +16,30 @@ export const MediaPicker = GObject.registerClass({
     "seasons",
     "movies",
   ],
+  Signals: {
+    "cancelled": {
+      param_types: [],
+    },
+    "selected": {
+      param_types: [Gio.ListStore],
+    },
+  },
 }, class MediaPicker extends Adw.Window {
   constructor(window) {
     super()
     this._mediaApi = new TMDB()
+  }
+
+  onCancel(button) {
+    console.log("onCancel")
+    // this.hide()
+    this.emit("cancelled")
+  }
+
+  onSelect(button) {
+    console.log("onSelect")
+    const list = Gio.ListStore.new(MediaInfo)
+    this.emit("selected", list)
   }
 
   onShowsToggled(button) {

@@ -27,6 +27,7 @@
                 <property name="css-classes">destructive-action
 raised</property>
                 <property name="icon-name">window-close-symbolic</property>
+                <signal name="clicked" handler="onCancel"/>
                 <child>
                   <object class="AdwButtonContent">
                     <property name="icon-name">window-close-symbolic</property>
@@ -40,6 +41,7 @@ raised</property>
                 <property name="css-classes">suggested-action
 raised</property>
                 <property name="icon-name">emblem-ok-symbolic</property>
+                <signal name="clicked" handler="onSelect"/>
                 <child>
                   <object class="AdwButtonContent">
                     <property name="icon-name">emblem-ok-symbolic</property>

@@ -315,10 +315,10 @@ var MediaPicker = GObject2.registerClass({
     const list = Gio3.ListStore.new(MediaInfo);
     this.emit("selected", list);
   }
-  onShowsToggled(button) {
-  }
-  onMoviesToggled(button) {
-  }
+  // onShowsToggled(button) {
+  // }
+  // onMoviesToggled(button) {
+  // }
   onSearchChanged(entry) {
     const query = entry.get_text();
     const kind = this._stack.get_visible_child_name();
@@ -395,8 +395,8 @@ var ClerkWindow = GObject3.registerClass({
 }, class ClerkWindow2 extends Adw2.ApplicationWindow {
   constructor(application) {
     super({ application });
-    this._mediaPicker.connect("cancelled", (picker) => console.log("--->>> Received cancelled!!!", picker));
-    this._mediaPicker.connect("selected", (picker, list) => console.log("--->>> Received selected!!!", picker, list));
+    this._mediaPicker.connect("cancelled", this.onMediaCancelled.bind(this));
+    this._mediaPicker.connect("selected", this.onMediaAdded.bind(this));
   }
   async onFilesAdd(button) {
     console.log("onFilesAdd");
@@ -428,13 +428,11 @@ var ClerkWindow = GObject3.registerClass({
     console.log("onMediaSearchOpen", button);
     this._mediaPicker.show();
   }
-  // onMediaSearchChanged(entry) {
-  //   console.log("onMediaSearchChanged", entry)
-  // }
-  // setupSearchItem(listView, listItem) {
-  // }
-  // bindSearchItem(listView, listItem) {
-  // }
+  onMediaCancelled(picker) {
+    picker.hide();
+  }
+  onMediaAdded(picker, list) {
+  }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {
       console.log("onFilesAdded", file, file.get_basename());

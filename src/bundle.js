@@ -218,10 +218,13 @@ var MediaInfo = GObject.registerClass({
     id: GObject.ParamSpec.double("id", "ID", "ID of the item", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, 0),
     name: GObject.ParamSpec.string("name", "Name", "Name of the file", GObject.ParamFlags.READWRITE, ""),
     date: GObject.ParamSpec.string("date", "Date", "Release date", GObject.ParamFlags.READWRITE, ""),
+    overview: GObject.ParamSpec.string("overview", "Overview", "The overview", GObject.ParamFlags.READWRITE, ""),
     seasonName: GObject.ParamSpec.string("season-name", "Season Name", "The season name", GObject.ParamFlags.READWRITE, ""),
     seasonNumber: GObject.ParamSpec.double("season-number", "Season Number", "The season number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
+    seasonOverview: GObject.ParamSpec.string("season-overview", "Season Overview", "The season overview", GObject.ParamFlags.READWRITE, ""),
     episodeName: GObject.ParamSpec.string("episode-name", "Episode Name", "The episode name", GObject.ParamFlags.READWRITE, ""),
-    episodeNumber: GObject.ParamSpec.double("episode-number", "Episode Number", "The episode number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1)
+    episodeNumber: GObject.ParamSpec.double("episode-number", "Episode Number", "The episode number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
+    episodeOverview: GObject.ParamSpec.string("episode-overview", "Episode Overview", "The episode overview", GObject.ParamFlags.READWRITE, "")
     // icon: GObject.ParamSpec.object("icon", "Icon", "Icon for the file", GObject.ParamFlags.READWRITE, Gio.Icon),
     // type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio.FileType, Gio.FileType.UNKNOWN),
   }
@@ -291,7 +294,9 @@ var MediaPicker = GObject2.registerClass({
     "stack",
     "shows",
     "seasons",
-    "movies"
+    "movies",
+    "select",
+    "back"
   ],
   Signals: {
     "cancelled": {
@@ -307,18 +312,12 @@ var MediaPicker = GObject2.registerClass({
     this._mediaApi = new TMDB();
   }
   onCancel(button) {
-    console.log("onCancel");
     this.emit("cancelled");
   }
   onSelect(button) {
-    console.log("onSelect");
     const list = Gio3.ListStore.new(MediaInfo);
     this.emit("selected", list);
   }
-  // onShowsToggled(button) {
-  // }
-  // onMoviesToggled(button) {
-  // }
   onSearchChanged(entry) {
     const query = entry.get_text();
     const kind = this._stack.get_visible_child_name();
@@ -349,8 +348,23 @@ var MediaPicker = GObject2.registerClass({
     row.subtitle = result.date;
   }
   onShowSelect(model, position, count) {
-    const id = model.get_selected_item().id;
-    this._mediaApi.details("tv", id).then((details) => console.log("====>>>", details)).catch((err) => console.error(err));
+    const show = model.get_selected_item();
+    const store = this._seasons;
+    this._seasons.remove_all();
+    this._stack.set_visible_child_name("season");
+    this._mediaApi.details("tv", show.id).then((details) => {
+      console.log(details);
+      for (const season of details.seasons) {
+        store.append(new MediaInfo({
+          id: show.id || -1,
+          name: show.name || show.original_name || show.title || show.original_title || "unknown",
+          date: season.date || season.air_date || "unknown",
+          seasonName: season.name,
+          seasonNumber: season.season_number,
+          seasonOverview: season.overview
+        }));
+      }
+    }).catch((err) => console.error(err));
   }
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow();
@@ -359,8 +373,8 @@ var MediaPicker = GObject2.registerClass({
   bindSeasonItem(listView, listItem) {
     const result = listItem.item;
     const row = listItem.child;
-    row.title = result.name.replace("&", "&amp;");
-    row.subtitle = result.date;
+    row.title = `${result.seasonNumber}) ${result.seasonName.replace("&", "&amp;")}`;
+    row.subtitle = `${result.date} - ${result.name}`;
   }
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow();
@@ -374,7 +388,10 @@ var MediaPicker = GObject2.registerClass({
   }
   onSwitchPage(stack) {
     console.log("==>>", stack.visible_child_name);
+    const page = stack.visible_child_name;
     this._searchEntry.set_text("");
+    this._select.sensitive = page === "tv";
+    this._back.sensitive = page === "season";
   }
 });
 

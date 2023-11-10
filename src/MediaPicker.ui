@@ -220,9 +220,7 @@ raised</property>
                     </child>
                   </object>
                 </property>
-                <property name="name">seasons</property>
-                <property name="title">Seasons</property>
-                <property name="visible">False</property>
+                <property name="name">season</property>
               </object>
             </child>
           </object>

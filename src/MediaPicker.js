@@ -15,6 +15,8 @@ export const MediaPicker = GObject.registerClass({
     "shows",
     "seasons",
     "movies",
+    "select",
+    "back",
   ],
   Signals: {
     "cancelled": {
@@ -52,7 +54,6 @@ export const MediaPicker = GObject.registerClass({
     this._mediaApi.search(kind, query)
       .then((res) => {
         store.remove_all()
-        console.log("==++>>", res)
 
         for (const result of res.results) {
           store.append(new MediaInfo({
@@ -79,9 +80,24 @@ export const MediaPicker = GObject.registerClass({
   }
 
   onShowSelect(model, position, count) {
-    const id = model.get_selected_item().id
-    this._mediaApi.details("tv", id)
-      .then((details) => console.log("====>>>", details))
+    const show = model.get_selected_item()
+    const store = this._seasons
+    this._seasons.remove_all()
+    this._stack.set_visible_child_name("season")
+    
+    this._mediaApi.details("tv", show.id)
+      .then((details) => {
+        for (const season of details.seasons) {
+          store.append(new MediaInfo({
+            id: show.id || -1,
+            name: show.name || show.original_name || show.title || show.original_title || "unknown",
+            date: season.date || season.air_date || "unknown",
+            seasonName: season.name,
+            seasonNumber: season.season_number,
+            seasonOverview: season.overview,
+          }))
+        }
+      })
       .catch((err) => console.error(err))
   }
 
@@ -93,8 +109,8 @@ export const MediaPicker = GObject.registerClass({
   bindSeasonItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
-    row.title = result.name.replace("&", "&amp;")
-    row.subtitle = result.date
+    row.title = `${result.seasonNumber}) ${result.seasonName.replace("&", "&amp;")}`
+    row.subtitle = `${result.date} - ${result.name}`
   }
 
   setupMovieItem(listView, listItem) {
@@ -110,7 +126,9 @@ export const MediaPicker = GObject.registerClass({
   }
 
   onSwitchPage(stack) {
-    console.log("==>>", stack.visible_child_name)
+    const page = stack.visible_child_name
     this._searchEntry.set_text("")
+    this._select.sensitive = page === "tv"
+    this._back.sensitive = page === "season"
   }
 })

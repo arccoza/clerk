@@ -105,7 +105,7 @@ raised</property>
                                 <property name="margin-end">12</property>
                                 <property name="margin-start">12</property>
                                 <property name="model">
-                                  <object class="GtkMultiSelection">
+                                  <object class="GtkMultiSelection" id="moviesSelect">
                                     <property name="model">
                                       <object class="GListStore" id="movies">
                                         <property name="item-type">MediaInfo</property>
@@ -154,7 +154,7 @@ raised</property>
                                 <property name="margin-end">12</property>
                                 <property name="margin-start">12</property>
                                 <property name="model">
-                                  <object class="GtkSingleSelection">
+                                  <object class="GtkSingleSelection" id="showsSelect">
                                     <property name="autoselect">False</property>
                                     <property name="model">
                                       <object class="GListStore" id="shows">
@@ -205,7 +205,7 @@ raised</property>
                                 <property name="margin-end">12</property>
                                 <property name="margin-start">12</property>
                                 <property name="model">
-                                  <object class="GtkMultiSelection">
+                                  <object class="GtkMultiSelection" id="seasonsSelect">
                                     <property name="model">
                                       <object class="GListStore" id="seasons">
                                         <property name="item-type">MediaInfo</property>

@@ -293,8 +293,11 @@ var MediaPicker = GObject2.registerClass({
     "searchEntry",
     "stack",
     "shows",
+    "showsSelect",
     "seasons",
+    "seasonsSelect",
     "movies",
+    "moviesSelect",
     "select",
     "back"
   ],
@@ -316,6 +319,12 @@ var MediaPicker = GObject2.registerClass({
   }
   onSelect(button) {
     const list = Gio3.ListStore.new(MediaInfo);
+    const page = this._stack.visible_child_name;
+    if (page === "movie") {
+      for (const item of get_selected_items(this._moviesSelect)) {
+        list.append(item);
+      }
+    }
     this.emit("selected", list);
   }
   onSearchChanged(entry) {
@@ -394,6 +403,17 @@ var MediaPicker = GObject2.registerClass({
     this._back.sensitive = page === "season";
   }
 });
+function get_selected_items(select) {
+  const selection = select.get_selection();
+  const items = [];
+  for (let i = 0, position; position = selection.get_nth(i), i < selection.get_size(); i++) {
+    const item = select.model.get_item(position);
+    if (item != null) {
+      items.push(item);
+    }
+  }
+  return items;
+}
 
 // src/window.js
 import GObject3 from "gi://GObject";
@@ -407,7 +427,8 @@ var ClerkWindow = GObject3.registerClass({
     "filesUpdate",
     "filePicker",
     "files",
-    "mediaPicker"
+    "mediaPicker",
+    "renames"
   ]
 }, class ClerkWindow2 extends Adw2.ApplicationWindow {
   constructor(application) {
@@ -449,6 +470,21 @@ var ClerkWindow = GObject3.registerClass({
     picker.hide();
   }
   onMediaAdded(picker, list) {
+    for (let i = 0, item; item = list.get_item(i), i < list.get_n_items(); i++) {
+      this._renames.append(item);
+    }
+    picker.hide();
+  }
+  setupRenameItem(listView, listItem) {
+    const row = new Adw2.ActionRow();
+    listItem.child = row;
+  }
+  bindRenameItem(listView, listItem) {
+    const rename = listItem.item;
+    const row = listItem.child;
+    row.icon_name = "checkbox";
+    row.title = rename.name;
+    row.subtitle = rename.date;
   }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {

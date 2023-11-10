@@ -173,7 +173,10 @@ dim-label</property>
                       <object class="GtkListView">
                         <property name="css-classes">rich-list</property>
                         <property name="factory">
-                          <object class="GtkSignalListItemFactory"/>
+                          <object class="GtkSignalListItemFactory">
+                            <signal name="setup" handler="setupRenameItem"/>
+                            <signal name="bind" handler="bindRenameItem"/>
+                          </object>
                         </property>
                         <property name="hexpand">True</property>
                         <property name="model">

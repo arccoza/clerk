@@ -13,8 +13,11 @@ export const MediaPicker = GObject.registerClass({
     "searchEntry",
     "stack",
     "shows",
+    "showsSelect",
     "seasons",
+    "seasonsSelect",
     "movies",
+    "moviesSelect",
     "select",
     "back",
   ],
@@ -38,6 +41,14 @@ export const MediaPicker = GObject.registerClass({
 
   onSelect(button) {
     const list = Gio.ListStore.new(MediaInfo)
+    const page = this._stack.visible_child_name
+
+    if (page === "movie") {
+      for (const item of get_selected_items(this._moviesSelect)) {
+        list.append(item)
+      }
+    }
+    
     this.emit("selected", list)
   }
 
@@ -136,3 +147,17 @@ export const MediaPicker = GObject.registerClass({
     this._back.sensitive = page === "season"
   }
 })
+
+function get_selected_items(select) {
+  const selection = select.get_selection()
+  const items = []
+
+  for (let i = 0, position; position = selection.get_nth(i), i < selection.get_size(); i++) {
+    const item = select.model.get_item(position)
+    if (item != null) {
+      items.push(item)
+    }
+  }
+
+  return items
+}

@@ -79,7 +79,7 @@
 	(3,45,"GtkScrolledWindow",None,44,None,None,None,None,None),
 	(3,46,"GtkListView","moviesList",45,None,None,None,None,None),
 	(3,47,"GtkSignalListItemFactory",None,46,None,None,None,None,None),
-	(3,51,"GtkMultiSelection",None,46,None,None,None,None,None),
+	(3,51,"GtkMultiSelection","moviesSelect",46,None,None,None,None,None),
 	(3,52,"GListStore","movies",51,None,None,None,-1,None),
 	(3,71,"GtkStackPage","seasonsPage",30,None,None,None,2,None),
 	(3,72,"GtkBox",None,71,None,None,None,None,None),
@@ -87,7 +87,7 @@
 	(3,74,"GtkScrolledWindow",None,73,None,None,None,None,None),
 	(3,75,"GtkListView","seasonsList",74,None,None,None,None,None),
 	(3,76,"GtkSignalListItemFactory",None,75,None,None,None,None,None),
-	(3,77,"GtkMultiSelection",None,75,None,None,None,None,None),
+	(3,77,"GtkMultiSelection","seasonsSelect",75,None,None,None,None,None),
 	(3,78,"GListStore","seasons",77,None,None,None,None,None),
 	(3,80,"GtkStackPage","showsPage",30,None,None,None,1,None),
 	(3,81,"GtkBox",None,80,None,None,None,None,None),
@@ -95,7 +95,7 @@
 	(3,83,"GtkScrolledWindow",None,82,None,None,None,None,None),
 	(3,84,"GtkListView","showsList",83,None,None,None,None,None),
 	(3,85,"GtkSignalListItemFactory",None,84,None,None,None,None,None),
-	(3,86,"GtkSingleSelection",None,84,None,None,None,None,None),
+	(3,86,"GtkSingleSelection","showsSelect",84,None,None,None,None,None),
 	(3,87,"GListStore","shows",86,None,None,None,None,None),
 	(3,88,"GtkButton","back",20,None,"start",None,None,None)
   </object>
@@ -288,6 +288,8 @@
 	(74,3,30,"GObject","notify","onSwitchPage","visible-child",None,None,None,None),
 	(75,3,15,"GtkButton","clicked","onCancel",None,None,None,None,None),
 	(76,3,4,"GtkButton","clicked","onSelect",None,None,None,None,None),
-	(77,3,88,"GtkButton","clicked","onBack",None,None,None,None,None)
+	(77,3,88,"GtkButton","clicked","onBack",None,None,None,None,None),
+	(78,1,98,"GtkSignalListItemFactory","setup","setupRenameItem",None,None,None,None,None),
+	(79,1,98,"GtkSignalListItemFactory","bind","bindRenameItem",None,None,None,None,None)
   </object_signal>
 </cambalache-project>

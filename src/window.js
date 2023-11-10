@@ -12,6 +12,7 @@ export const ClerkWindow = GObject.registerClass({
     "filePicker",
     "files",
     "mediaPicker",
+    "renames",
   ],
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {
@@ -66,7 +67,24 @@ export const ClerkWindow = GObject.registerClass({
   }
 
   onMediaAdded(picker, list) {
+    for (let i = 0, item; item = list.get_item(i), i < list.get_n_items(); i++) {
+      this._renames.append(item)
+    }
 
+    picker.hide()
+  }
+
+  setupRenameItem(listView, listItem) {
+    const row = new Adw.ActionRow()
+    listItem.child = row
+  }
+
+  bindRenameItem(listView, listItem) {
+    const rename = listItem.item
+    const row = listItem.child
+    row.icon_name = "checkbox"
+    row.title = rename.episodeName || rename.name
+    row.subtitle = rename.date
   }
 
   addFiles(files) {

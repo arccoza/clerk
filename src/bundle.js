@@ -390,7 +390,7 @@ var MediaPicker = GObject2.registerClass({
   onSwitchPage(stack) {
     const page = stack.visible_child_name;
     this._searchEntry.set_text("");
-    this._select.sensitive = page === "tv";
+    this._select.sensitive = page !== "tv";
     this._back.sensitive = page === "season";
   }
 });

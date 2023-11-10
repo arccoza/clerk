@@ -453,6 +453,8 @@ var ClerkWindow = GObject3.registerClass({
   }
   setupFileItem(listView, listItem) {
     const row = new Adw2.ActionRow();
+    row.set_title_lines(1);
+    row.set_subtitle_lines(1);
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {
@@ -477,13 +479,15 @@ var ClerkWindow = GObject3.registerClass({
   }
   setupRenameItem(listView, listItem) {
     const row = new Adw2.ActionRow();
+    row.set_title_lines(1);
+    row.set_subtitle_lines(1);
     listItem.child = row;
   }
   bindRenameItem(listView, listItem) {
     const rename = listItem.item;
     const row = listItem.child;
     row.icon_name = "checkbox";
-    row.title = rename.name;
+    row.title = rename.episodeName || rename.name;
     row.subtitle = rename.date;
   }
   addFiles(files) {

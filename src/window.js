@@ -46,6 +46,8 @@ export const ClerkWindow = GObject.registerClass({
 
   setupFileItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    row.set_title_lines(1)
+    row.set_subtitle_lines(1)
     listItem.child = row
   }
 
@@ -76,6 +78,8 @@ export const ClerkWindow = GObject.registerClass({
 
   setupRenameItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    row.set_title_lines(1)
+    row.set_subtitle_lines(1)
     listItem.child = row
   }
 

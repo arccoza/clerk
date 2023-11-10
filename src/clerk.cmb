@@ -287,6 +287,7 @@
 	(71,3,86,"GtkSelectionModel","selection-changed","onShowSelect",None,None,None,None,None),
 	(74,3,30,"GObject","notify","onSwitchPage","visible-child",None,None,None,None),
 	(75,3,15,"GtkButton","clicked","onCancel",None,None,None,None,None),
-	(76,3,4,"GtkButton","clicked","onSelect",None,None,None,None,None)
+	(76,3,4,"GtkButton","clicked","onSelect",None,None,None,None,None),
+	(77,3,88,"GtkButton","clicked","onBack",None,None,None,None,None)
   </object_signal>
 </cambalache-project>

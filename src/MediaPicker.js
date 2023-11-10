@@ -101,6 +101,10 @@ export const MediaPicker = GObject.registerClass({
       .catch((err) => console.error(err))
   }
 
+  onBack(button) {
+    this._stack.set_visible_child_name("tv")
+  }
+
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow()
     listItem.child = row

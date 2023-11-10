@@ -327,7 +327,6 @@ var MediaPicker = GObject2.registerClass({
     const store = kind === "tv" ? this._shows : this._movies;
     this._mediaApi.search(kind, query).then((res) => {
       store.remove_all();
-      console.log("==++>>", res);
       for (const result of res.results) {
         store.append(new MediaInfo({
           id: result.id || -1,
@@ -353,7 +352,6 @@ var MediaPicker = GObject2.registerClass({
     this._seasons.remove_all();
     this._stack.set_visible_child_name("season");
     this._mediaApi.details("tv", show.id).then((details) => {
-      console.log(details);
       for (const season of details.seasons) {
         store.append(new MediaInfo({
           id: show.id || -1,
@@ -365,6 +363,9 @@ var MediaPicker = GObject2.registerClass({
         }));
       }
     }).catch((err) => console.error(err));
+  }
+  onBack(button) {
+    this._stack.set_visible_child_name("tv");
   }
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow();
@@ -387,7 +388,6 @@ var MediaPicker = GObject2.registerClass({
     row.subtitle = result.date;
   }
   onSwitchPage(stack) {
-    console.log("==>>", stack.visible_child_name);
     const page = stack.visible_child_name;
     this._searchEntry.set_text("");
     this._select.sensitive = page === "tv";

@@ -59,6 +59,7 @@ raised</property>
                 <property name="css-classes">raised</property>
                 <property name="icon-name">carousel-arrow-previous-symbolic</property>
                 <property name="sensitive">False</property>
+                <signal name="clicked" handler="onBack"/>
               </object>
             </child>
             <child type="center">

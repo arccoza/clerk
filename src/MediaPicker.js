@@ -31,13 +31,10 @@ export const MediaPicker = GObject.registerClass({
   }
 
   onCancel(button) {
-    console.log("onCancel")
-    // this.hide()
     this.emit("cancelled")
   }
 
   onSelect(button) {
-    console.log("onSelect")
     const list = Gio.ListStore.new(MediaInfo)
     this.emit("selected", list)
   }

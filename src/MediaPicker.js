@@ -42,14 +42,6 @@ export const MediaPicker = GObject.registerClass({
     this.emit("selected", list)
   }
 
-  onShowsToggled(button) {
-
-  }
-
-  onMoviesToggled(button) {
-
-  }
-
   onSearchChanged(entry) {
     const query = entry.get_text()
     const kind = this._stack.get_visible_child_name()

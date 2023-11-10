@@ -56,7 +56,7 @@ export const ClerkWindow = GObject.registerClass({
     const row = listItem.child
     row.icon_name = "checkbox"
     row.title = file.get_basename()
-    row.subtitle = file.get_parent()?.get_path()
+    row.subtitle = file.get_parent()?.get_path() || ""
   }
 
   onMediaSearchOpen(button) {

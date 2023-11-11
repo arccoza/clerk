@@ -109,7 +109,7 @@ export class TMDB {
     if (isOriginal) {
       url = `${this._baseUrl}/tv/${id}?language=${this._language}`
     } else {
-      url = `${this._baseUrl}/tv/episode_group/${groupId}/?language=${this._language}`
+      url = `${this._baseUrl}/tv/episode_group/${groupId}?language=${this._language}`
     }
 
     console.log("seasons--------->>>", url, id, groupId, isOriginal, groupId === "-1")

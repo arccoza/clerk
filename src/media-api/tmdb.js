@@ -27,7 +27,10 @@ export class TMDB {
       .then((res) => res.json())
       .then((res) => {
         if (res.success === false) {
-          throw res
+          throw {
+            url,
+            ...res,
+          }
         }
 
         this._cache[url] = res
@@ -128,7 +131,7 @@ export class TMDB {
           number: season.season_number,
           air_date: season.air_date,
           overview: season.overview || "",
-          episode_count: season.episode_count,          
+          episode_count: season.episode_count,
         })
       }
     } else {

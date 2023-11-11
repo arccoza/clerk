@@ -19,3 +19,12 @@ export const MediaInfo = GObject.registerClass({
     // type: GObject.ParamSpec.enum("type", "Type", "File type", GObject.ParamFlags.READWRITE, Gio.FileType, Gio.FileType.UNKNOWN),
   }
 }, class extends GObject.Object {})
+
+export const EpisodeGroup = GObject.registerClass({
+  GTypeName: "EpisodeGroup",
+  Properties: {
+    id: GObject.ParamSpec.string("id", "ID", "ID of the group", GObject.ParamFlags.READWRITE, ""),
+    name: GObject.ParamSpec.string("name", "Name", "Episode group name", GObject.ParamFlags.READWRITE, ""),
+    type: GObject.ParamSpec.double("type", "Type", "Episode group type", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
+  }
+}, class extends GObject.Object {})

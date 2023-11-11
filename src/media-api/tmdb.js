@@ -127,7 +127,7 @@ export class TMDB {
           name: season.name,
           number: season.season_number,
           air_date: season.air_date,
-          overview: season.overview,
+          overview: season.overview || "",
           episode_count: season.episode_count,          
         })
       }
@@ -138,6 +138,7 @@ export class TMDB {
           name: group.name,
           number: group.order,
           air_date: group.episodes[0]?.air_date,
+          overview: group.overview || "",
           episode_count: group.episodes.length,
         })
       }

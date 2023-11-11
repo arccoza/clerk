@@ -145,6 +145,7 @@ export const MediaPicker = GObject.registerClass({
     this._searchEntry.set_text("")
     this._select.sensitive = page !== "tv"
     this._back.sensitive = page === "season"
+    this._searchEntry.visible = page !== "season"
   }
 })
 

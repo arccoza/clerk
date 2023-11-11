@@ -230,6 +230,15 @@ var MediaInfo = GObject.registerClass({
   }
 }, class extends GObject.Object {
 });
+var EpisodeGroup = GObject.registerClass({
+  GTypeName: "EpisodeGroup",
+  Properties: {
+    id: GObject.ParamSpec.string("id", "ID", "ID of the group", GObject.ParamFlags.READWRITE, ""),
+    name: GObject.ParamSpec.string("name", "Name", "Episode group name", GObject.ParamFlags.READWRITE, ""),
+    type: GObject.ParamSpec.double("type", "Type", "Episode group type", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1)
+  }
+}, class extends GObject.Object {
+});
 
 // src/MediaPicker.js
 import GObject2 from "gi://GObject";
@@ -251,8 +260,28 @@ var TMDB = class {
     accept: "application/json",
     Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMTliM2M1M2JjNzY5N2M0NWQzZGQ1ZmYzYzE3ZDFjMCIsInN1YiI6IjU4MmQyYTMxOTI1MTQxMDk1ZDAwMjY2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.a1p8_PtthYMxddvjQpCedWB93BBWKXKhuLWjAwHmzUk"
   };
+  _cache = {};
   constructor(language = "en-US") {
     this._language = language;
+  }
+  async get(url) {
+    if (Object.hasOwn(this._cache, url)) {
+      return this._cache[url];
+    }
+    const options = {
+      method: "GET",
+      headers: this._headers
+    };
+    return fetch(url, options).then((res) => res.json()).then((res) => {
+      if (res.success === false) {
+        throw {
+          url,
+          ...res
+        };
+      }
+      this._cache[url] = res;
+      return res;
+    });
   }
   async search(type, query, page = 1) {
     if (!query) {
@@ -283,6 +312,111 @@ var TMDB = class {
     };
     return fetch(url, options).then((res) => res.json());
   }
+  async groupings(id) {
+    const url = `${this._baseUrl}/tv/${id}/episode_groups?language=${this._language}`;
+    const res = await this.get(url);
+    const ret = {
+      id,
+      results: [
+        {
+          id: "-1",
+          name: "Original Air Date",
+          type: 1
+        }
+      ]
+    };
+    for (const result of res.results) {
+      ret.results.push({
+        id: result.id,
+        name: result.name,
+        type: result.type
+      });
+    }
+    this._cache[`groupings/${id}`] = ret;
+    return ret;
+  }
+  async seasons(id, groupId) {
+    const isOriginal = groupId === "-1";
+    let url = "";
+    if (isOriginal) {
+      url = `${this._baseUrl}/tv/${id}?language=${this._language}`;
+    } else {
+      url = `${this._baseUrl}/tv/episode_group/${groupId}?language=${this._language}`;
+    }
+    console.log("seasons--------->>>", url, id, groupId, isOriginal, groupId === "-1");
+    const res = await this.get(url);
+    const ret = {
+      id,
+      results: []
+    };
+    if (isOriginal) {
+      for (const season of res.seasons) {
+        ret.results.push({
+          id: season.id,
+          name: season.name,
+          number: season.season_number,
+          air_date: season.air_date,
+          overview: season.overview || "",
+          episode_count: season.episode_count
+        });
+      }
+    } else {
+      for (const group of res.groups) {
+        ret.results.push({
+          id: group.id,
+          name: group.name,
+          number: group.order,
+          air_date: group.episodes[0]?.air_date,
+          overview: group.overview || "",
+          episode_count: group.episodes.length
+        });
+      }
+    }
+    return ret;
+  }
+  async episodes(id, groupId, ...seasons) {
+    const isOriginal = groupId === "-1";
+    const ret = {
+      id,
+      results: []
+    };
+    if (isOriginal) {
+      const pending = [];
+      for (const season of seasons) {
+        const url = `${this._baseUrl}/tv/${id}/season/${season}?language=${this._language}`;
+        pending.push(this.get(url));
+      }
+      const res = await Promise.all(pending);
+      for (const episode of res.episodes) {
+        ret.results.push({
+          id: episode.id,
+          name: episode.name,
+          number: episode.episode_number,
+          air_date: episode.air_date,
+          overview: episode.overview,
+          season_number: episode.season_number
+        });
+      }
+    } else {
+      const url = `${this._baseUrl}/tv/episode_group/${groupId}/?language=${this._language}`;
+      const res = await this.get(url);
+      const idx = res.groups.reduce((a, g, i) => (a[g.order] = i, a), {});
+      for (const season of seasons) {
+        const group = res.groups[idx[season]];
+        for (const episode of group.episodes) {
+          ret.results.push({
+            id: episode.id,
+            name: episode.name,
+            number: episode.episode_number,
+            air_date: episode.air_date,
+            overview: episode.overview,
+            season_number: episode.season_number
+          });
+        }
+      }
+    }
+    return ret;
+  }
 };
 
 // src/MediaPicker.js
@@ -298,8 +432,11 @@ var MediaPicker = GObject2.registerClass({
     "seasonsSelect",
     "movies",
     "moviesSelect",
+    "groupings",
+    "groupingsDropdown",
     "select",
     "back"
+    // "progressBar",
   ],
   Signals: {
     "cancelled": {
@@ -313,6 +450,7 @@ var MediaPicker = GObject2.registerClass({
   constructor(window) {
     super();
     this._mediaApi = new TMDB();
+    this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name");
   }
   onCancel(button) {
     this.emit("cancelled");
@@ -357,21 +495,33 @@ var MediaPicker = GObject2.registerClass({
   }
   onShowSelect(model, position, count) {
     const show = model.get_selected_item();
-    const store = this._seasons;
-    this._seasons.remove_all();
     this._stack.set_visible_child_name("season");
-    this._mediaApi.details("tv", show.id).then((details) => {
-      for (const season of details.seasons) {
-        store.append(new MediaInfo({
+    this._mediaApi.groupings(show.id).then((res) => {
+      this._groupings.remove_all();
+      res.results.forEach((group) => {
+        this._groupings.append(new EpisodeGroup(group));
+      });
+    }).catch((err) => console.error(err));
+  }
+  onGroupingSelect(dropdown) {
+    const show = this._showsSelect.get_selected_item();
+    const group = dropdown.get_selected_item();
+    this._mediaApi.seasons(show.id, group.id).then((res) => {
+      this._seasons.remove_all();
+      res.results.forEach((season) => {
+        this._seasons.append(new MediaInfo({
           id: show.id || -1,
           name: show.name || show.original_name || show.title || show.original_title || "unknown",
-          date: season.date || season.air_date || "unknown",
+          date: season.air_date || "unknown",
           seasonName: season.name,
-          seasonNumber: season.season_number,
+          seasonNumber: season.number,
           seasonOverview: season.overview
         }));
-      }
-    }).catch((err) => console.error(err));
+      });
+    }).catch((err) => {
+      this._seasons.remove_all();
+      console.error(err);
+    });
   }
   onBack(button) {
     this._stack.set_visible_child_name("tv");
@@ -401,6 +551,8 @@ var MediaPicker = GObject2.registerClass({
     this._searchEntry.set_text("");
     this._select.sensitive = page !== "tv";
     this._back.sensitive = page === "season";
+    this._searchEntry.visible = page !== "season";
+    this._groupingsDropdown.visible = page === "season";
   }
 });
 function get_selected_items(select) {
@@ -462,7 +614,7 @@ var ClerkWindow = GObject3.registerClass({
     const row = listItem.child;
     row.icon_name = "checkbox";
     row.title = file.get_basename();
-    row.subtitle = file.get_path();
+    row.subtitle = file.get_parent()?.get_path() || "";
   }
   onMediaSearchOpen(button) {
     console.log("onMediaSearchOpen", button);

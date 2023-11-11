@@ -65,7 +65,7 @@
 	(3,3,"AdwHeaderBar",None,2,None,None,None,None,None),
 	(3,4,"GtkButton","select",3,None,"end",None,2,None),
 	(3,15,"GtkButton","cancel",3,None,"start",None,None,None),
-	(3,16,"GtkBox","footer",2,None,None,None,5,None),
+	(3,16,"GtkBox","footer",2,None,None,None,4,None),
 	(3,17,"GtkLabel",None,16,None,None,None,None,None),
 	(3,18,"AdwButtonContent",None,4,None,None,None,-1,None),
 	(3,19,"AdwButtonContent",None,15,None,None,None,-1,None),
@@ -97,7 +97,10 @@
 	(3,85,"GtkSignalListItemFactory",None,84,None,None,None,None,None),
 	(3,86,"GtkSingleSelection","showsSelect",84,None,None,None,None,None),
 	(3,87,"GListStore","shows",86,None,None,None,None,None),
-	(3,88,"GtkButton","back",20,None,"start",None,None,None)
+	(3,88,"GtkButton","back",20,None,"start",None,None,None),
+	(3,89,"GtkDropDown","groupingsDropdown",20,None,"end",None,-1,None),
+	(3,90,"GtkSingleSelection",None,89,None,None,None,-1,None),
+	(3,91,"GListStore","groupings",90,None,None,None,-1,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -269,7 +272,11 @@
 	(3,87,"GListStore","item-type","MediaInfo",None,None,None,None,None,None,None,None,None),
 	(3,88,"GtkButton","icon-name","carousel-arrow-previous-symbolic",None,None,None,None,None,None,None,None,None),
 	(3,88,"GtkWidget","css-classes","raised",None,None,None,None,None,None,None,None,None),
-	(3,88,"GtkWidget","sensitive","False",None,None,None,None,None,None,None,None,None)
+	(3,88,"GtkWidget","sensitive","False",None,None,None,None,None,None,None,None,None),
+	(3,89,"GtkDropDown","model",None,None,None,None,None,90,None,None,None,None),
+	(3,89,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None),
+	(3,90,"GtkSingleSelection","model",None,None,None,None,None,91,None,None,None,None),
+	(3,91,"GListStore","item-type","EpisodeGroup",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),
@@ -290,6 +297,7 @@
 	(76,3,4,"GtkButton","clicked","onSelect",None,None,None,None,None),
 	(77,3,88,"GtkButton","clicked","onBack",None,None,None,None,None),
 	(78,1,98,"GtkSignalListItemFactory","setup","setupRenameItem",None,None,None,None,None),
-	(79,1,98,"GtkSignalListItemFactory","bind","bindRenameItem",None,None,None,None,None)
+	(79,1,98,"GtkSignalListItemFactory","bind","bindRenameItem",None,None,None,None,None),
+	(80,3,89,"GObject","notify","onGroupingSelect","selected-item",None,None,None,None)
   </object_signal>
 </cambalache-project>

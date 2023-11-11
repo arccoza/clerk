@@ -3,7 +3,7 @@ import Gio from 'gi://Gio'
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
 import { TMDB } from "./media-api"
-import { MediaInfo } from "./gobjects"
+import { MediaInfo, EpisodeGroup, } from "./gobjects"
 
 
 export const MediaPicker = GObject.registerClass({
@@ -18,8 +18,11 @@ export const MediaPicker = GObject.registerClass({
     "seasonsSelect",
     "movies",
     "moviesSelect",
+    "groupings",
+    "groupingsDropdown",
     "select",
     "back",
+    // "progressBar",
   ],
   Signals: {
     "cancelled": {
@@ -33,6 +36,11 @@ export const MediaPicker = GObject.registerClass({
   constructor(window) {
     super()
     this._mediaApi = new TMDB()
+    this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name")
+
+    // setInterval(() => {
+    //   this._progressBar.pulse()
+    // }, 180)
   }
 
   onCancel(button) {
@@ -92,24 +100,42 @@ export const MediaPicker = GObject.registerClass({
 
   onShowSelect(model, position, count) {
     const show = model.get_selected_item()
-    const store = this._seasons
-    this._seasons.remove_all()
     this._stack.set_visible_child_name("season")
-    
-    this._mediaApi.details("tv", show.id)
-      .then((details) => {
-        for (const season of details.seasons) {
-          store.append(new MediaInfo({
-            id: show.id || -1,
-            name: show.name || show.original_name || show.title || show.original_title || "unknown",
-            date: season.date || season.air_date || "unknown",
-            seasonName: season.name,
-            seasonNumber: season.season_number,
-            seasonOverview: season.overview,
-          }))
-        }
+
+    // this._groupings.remove_all()
+    this._mediaApi.groupings(show.id)
+      .then((res) => {
+        this._groupings.remove_all()
+        res.results.forEach((group) => {
+          this._groupings.append(new EpisodeGroup(group))
+        })
       })
       .catch((err) => console.error(err))
+  }
+
+  onGroupingSelect(dropdown) {
+    const show = this._showsSelect.get_selected_item()
+    const group = dropdown.get_selected_item()
+
+    // this._seasons.remove_all()
+    this._mediaApi.seasons(show.id, group.id)
+      .then((res) => {
+        this._seasons.remove_all()
+        res.results.forEach((season) => {
+          this._seasons.append(new MediaInfo({
+            id: show.id || -1,
+            name: show.name || show.original_name || show.title || show.original_title || "unknown",
+            date: season.air_date || "unknown",
+            seasonName: season.name,
+            seasonNumber: season.number,
+            seasonOverview: season.overview,
+          }))
+        })
+      })
+      .catch((err) => {
+        this._seasons.remove_all()
+        console.error(err)
+      })
   }
 
   onBack(button) {
@@ -146,6 +172,7 @@ export const MediaPicker = GObject.registerClass({
     this._select.sensitive = page !== "tv"
     this._back.sensitive = page === "season"
     this._searchEntry.visible = page !== "season"
+    this._groupingsDropdown.visible = page === "season"
   }
 })
 

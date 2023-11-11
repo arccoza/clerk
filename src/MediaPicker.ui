@@ -54,6 +54,21 @@ raised</property>
         </child>
         <child>
           <object class="GtkActionBar" id="searchBar">
+            <child type="end">
+              <object class="GtkDropDown" id="groupingsDropdown">
+                <property name="model">
+                  <object class="GtkSingleSelection">
+                    <property name="model">
+                      <object class="GListStore" id="groupings">
+                        <property name="item-type">EpisodeGroup</property>
+                      </object>
+                    </property>
+                  </object>
+                </property>
+                <property name="visible">False</property>
+                <signal name="notify::selected-item" handler="onGroupingSelect"/>
+              </object>
+            </child>
             <child type="start">
               <object class="GtkButton" id="back">
                 <property name="css-classes">raised</property>

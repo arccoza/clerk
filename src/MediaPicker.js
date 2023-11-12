@@ -104,24 +104,6 @@ export const MediaPicker = GObject.registerClass({
       .catch((err) => console.error(err))
   }
 
-  setupShowItem(listView, listItem) {
-    const row = new Adw.ActionRow()
-    const order = new Gtk.Label()
-    order.width_chars = 2
-    order.add_css_class("title-4")
-    row.add_prefix(order)
-    row.order = order
-    listItem.child = row
-  }
-
-  bindShowItem(listView, listItem) {
-    const result = listItem.item
-    const row = listItem.child
-    row.title = result.name.replace("&", "&amp;")
-    row.subtitle = result.date
-    row.order.label = (listItem.get_position() + 1).toString()
-  }
-
   onShowSelect(model, position, count) {
     const show = model.get_selected_item()
     this._stack.set_visible_child_name("season")
@@ -168,6 +150,42 @@ export const MediaPicker = GObject.registerClass({
     this._stack.set_visible_child_name("tv")
   }
 
+  setupMovieItem(listView, listItem) {
+    const row = new Adw.ActionRow()
+    const order = new Gtk.Label()
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.add_prefix(order)
+    row.order = order
+    listItem.child = row
+  }
+
+  bindMovieItem(listView, listItem) {
+    const result = listItem.item
+    const row = listItem.child
+    row.title = result.name.replace("&", "&amp;")
+    row.subtitle = result.date
+    row.order.label = (listItem.get_position() + 1).toString()
+  }
+
+  setupShowItem(listView, listItem) {
+    const row = new Adw.ActionRow()
+    const order = new Gtk.Label()
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.add_prefix(order)
+    row.order = order
+    listItem.child = row
+  }
+
+  bindShowItem(listView, listItem) {
+    const result = listItem.item
+    const row = listItem.child
+    row.title = result.name.replace("&", "&amp;")
+    row.subtitle = result.date
+    row.order.label = (listItem.get_position() + 1).toString()
+  }
+
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow()
     const order = new Gtk.Label()
@@ -193,24 +211,6 @@ export const MediaPicker = GObject.registerClass({
     row.subtitle = `${result.name.replace("&", "&amp;")}  •  ${result.date}`
     row.order.label = result.seasonNumber.toString()
     row.episodes.label = result.seasonEpisodeCount.toString()
-  }
-
-  setupMovieItem(listView, listItem) {
-    const row = new Adw.ActionRow()
-    const order = new Gtk.Label()
-    order.width_chars = 2
-    order.add_css_class("title-4")
-    row.add_prefix(order)
-    row.order = order
-    listItem.child = row
-  }
-
-  bindMovieItem(listView, listItem) {
-    const result = listItem.item
-    const row = listItem.child
-    row.title = result.name.replace("&", "&amp;")
-    row.subtitle = result.date
-    row.order.label = (listItem.get_position() + 1).toString()
   }
 
   onSwitchPage(stack) {

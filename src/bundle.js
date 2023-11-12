@@ -387,16 +387,18 @@ var TMDB = class {
         const url = `${this._baseUrl}/tv/${id}/season/${season}?language=${this._language}`;
         pending.push(this.get(url));
       }
-      const res = await Promise.all(pending);
-      for (const episode of res.episodes) {
-        ret.results.push({
-          id: episode.id,
-          name: episode.name,
-          number: episode.episode_number,
-          air_date: episode.air_date,
-          overview: episode.overview,
-          season_number: episode.season_number
-        });
+      const all = await Promise.all(pending);
+      for (const res of all) {
+        for (const episode of res.episodes) {
+          ret.results.push({
+            id: episode.id,
+            name: episode.name,
+            number: episode.episode_number,
+            air_date: episode.air_date,
+            overview: episode.overview,
+            season_number: episode.season_number
+          });
+        }
       }
     } else {
       const url = `${this._baseUrl}/tv/episode_group/${groupId}/?language=${this._language}`;
@@ -477,12 +479,43 @@ var MediaPicker = GObject2.registerClass({
   onSelect(button) {
     const list = Gio3.ListStore.new(MediaInfo);
     const page = this._stack.visible_child_name;
-    if (page === "movie") {
+    if (page === "movie" && this._moviesSelect) {
+      const movies = get_selected_items(this._moviesSelect);
+      if (movies.length === 0) {
+        return;
+      }
       for (const item of get_selected_items(this._moviesSelect)) {
         list.append(item);
       }
+      this.emit("selected", list);
+    } else if (page === "season") {
+      const seasons = get_selected_items(this._seasonsSelect);
+      const seasonsMap = Object.fromEntries(seasons.map((s) => [s.seasonNumber, s]));
+      const show = this._showsSelect.get_selected_item();
+      const group = this._groupingsDropdown.get_selected_item();
+      if (seasons.length === 0) {
+        return;
+      }
+      this._mediaApi.episodes(show.id, group.id, ...Object.keys(seasonsMap).map(parseFloat)).then((res) => {
+        for (const episode of res.results) {
+          const season = seasonsMap[episode.season_number];
+          list.append(new MediaInfo({
+            id: show.id,
+            name: show.name,
+            date: show.date,
+            overview: show.overview,
+            seasonName: season.seasonName,
+            seasonNumber: season.seasonNumber,
+            seasonOverview: season.seasonOverview,
+            seasonEpisodeCount: season.seasonEpisodeCount,
+            episodeName: episode.name,
+            episodeNumber: episode.number,
+            episodeOverview: episode.overview
+          }));
+        }
+        this.emit("selected", list);
+      }).catch((err) => console.error(err));
     }
-    this.emit("selected", list);
   }
   onSearchChanged(entry) {
     const query = entry.get_text();

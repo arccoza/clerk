@@ -68,13 +68,51 @@ export const MediaPicker = GObject.registerClass({
     const list = Gio.ListStore.new(MediaInfo)
     const page = this._stack.visible_child_name
 
-    if (page === "movie") {
+    if (page === "movie" && this._moviesSelect) {
+      const movies = get_selected_items(this._moviesSelect)
+      if (movies.length === 0) {
+        return
+      }
+
       for (const item of get_selected_items(this._moviesSelect)) {
         list.append(item)
       }
+
+      this.emit("selected", list)
+    } else if (page === "season") {
+      const seasons = get_selected_items(this._seasonsSelect)
+      const seasonsMap = Object.fromEntries(seasons.map((s) => ([s.seasonNumber, s])))
+      const show = this._showsSelect.get_selected_item()
+      const group = this._groupingsDropdown.get_selected_item()
+
+      if (seasons.length === 0) {
+        return
+      }
+
+      this._mediaApi.episodes(show.id, group.id, ...Object.keys(seasonsMap).map(parseFloat))
+        .then((res) => {
+          for (const episode of res.results) {
+            const season = seasonsMap[episode.season_number]
+
+            list.append(new MediaInfo({
+              id: show.id,
+              name: show.name,
+              date: show.date,
+              overview: show.overview,
+              seasonName: season.seasonName,
+              seasonNumber: season.seasonNumber,
+              seasonOverview: season.seasonOverview,
+              seasonEpisodeCount: season.seasonEpisodeCount,
+              episodeName: episode.name,
+              episodeNumber: episode.number,
+              episodeOverview: episode.overview,
+            }))
+          }
+
+          this.emit("selected", list)
+        })
+        .catch((err) => console.error(err))
     }
-    
-    this.emit("selected", list)
   }
 
   onSearchChanged(entry) {

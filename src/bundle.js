@@ -222,6 +222,7 @@ var MediaInfo = GObject.registerClass({
     seasonName: GObject.ParamSpec.string("season-name", "Season Name", "The season name", GObject.ParamFlags.READWRITE, ""),
     seasonNumber: GObject.ParamSpec.double("season-number", "Season Number", "The season number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     seasonOverview: GObject.ParamSpec.string("season-overview", "Season Overview", "The season overview", GObject.ParamFlags.READWRITE, ""),
+    seasonEpisodeCount: GObject.ParamSpec.double("season-episode-count", "Season Episode Count", "The episode count for the season", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     episodeName: GObject.ParamSpec.string("episode-name", "Episode Name", "The episode name", GObject.ParamFlags.READWRITE, ""),
     episodeNumber: GObject.ParamSpec.double("episode-number", "Episode Number", "The episode number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     episodeOverview: GObject.ParamSpec.string("episode-overview", "Episode Overview", "The episode overview", GObject.ParamFlags.READWRITE, "")
@@ -435,8 +436,9 @@ var MediaPicker = GObject2.registerClass({
     "groupings",
     "groupingsDropdown",
     "select",
-    "back"
-    // "progressBar",
+    "back",
+    "progressBar",
+    "progressBarRevealer"
   ],
   Signals: {
     "cancelled": {
@@ -451,6 +453,22 @@ var MediaPicker = GObject2.registerClass({
     super();
     this._mediaApi = new TMDB();
     this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name");
+  }
+  set isBusy(v) {
+    const id = this._isBusy;
+    if (v && id == null) {
+      this._progressBarRevealer.reveal_child = v;
+      this._isBusy = setInterval(() => {
+        this._progressBar.pulse();
+      }, 180);
+    } else {
+      clearInterval(id);
+      this._isBusy = null;
+      this._progressBarRevealer.reveal_child = v;
+    }
+  }
+  get isBusy() {
+    return this._isBusy != null;
   }
   onCancel(button) {
     this.emit("cancelled");
@@ -472,8 +490,10 @@ var MediaPicker = GObject2.registerClass({
       return;
     }
     const store = kind === "tv" ? this._shows : this._movies;
+    this.isBusy = true;
     this._mediaApi.search(kind, query).then((res) => {
       store.remove_all();
+      this.isBusy = false;
       for (const result of res.results) {
         store.append(new MediaInfo({
           id: result.id || -1,
@@ -485,6 +505,11 @@ var MediaPicker = GObject2.registerClass({
   }
   setupShowItem(listView, listItem) {
     const row = new Adw.ActionRow();
+    const order = new Gtk.Label();
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.add_prefix(order);
+    row.order = order;
     listItem.child = row;
   }
   bindShowItem(listView, listItem) {
@@ -492,10 +517,12 @@ var MediaPicker = GObject2.registerClass({
     const row = listItem.child;
     row.title = result.name.replace("&", "&amp;");
     row.subtitle = result.date;
+    row.order.label = (listItem.get_position() + 1).toString();
   }
   onShowSelect(model, position, count) {
     const show = model.get_selected_item();
     this._stack.set_visible_child_name("season");
+    this.isBusy = true;
     this._mediaApi.groupings(show.id).then((res) => {
       this._groupings.remove_all();
       res.results.forEach((group) => {
@@ -507,6 +534,7 @@ var MediaPicker = GObject2.registerClass({
     const show = this._showsSelect.get_selected_item();
     const group = dropdown.get_selected_item();
     this._mediaApi.seasons(show.id, group.id).then((res) => {
+      this.isBusy = false;
       this._seasons.remove_all();
       res.results.forEach((season) => {
         this._seasons.append(new MediaInfo({
@@ -515,7 +543,8 @@ var MediaPicker = GObject2.registerClass({
           date: season.air_date || "unknown",
           seasonName: season.name,
           seasonNumber: season.number,
-          seasonOverview: season.overview
+          seasonOverview: season.overview,
+          seasonEpisodeCount: season.episode_count
         }));
       });
     }).catch((err) => {
@@ -528,16 +557,36 @@ var MediaPicker = GObject2.registerClass({
   }
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow();
+    const order = new Gtk.Label();
+    const episodes = new Gtk.Button();
+    episodes.halign = Gtk.Align.CENTER;
+    episodes.valign = Gtk.Align.CENTER;
+    episodes.add_css_class("accent");
+    episodes.add_css_class("heading");
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.use_markup = false;
+    row.add_prefix(order);
+    row.add_suffix(episodes);
+    row.order = order;
+    row.episodes = episodes;
     listItem.child = row;
   }
   bindSeasonItem(listView, listItem) {
     const result = listItem.item;
     const row = listItem.child;
-    row.title = `${result.seasonNumber}) ${result.seasonName.replace("&", "&amp;")}`;
-    row.subtitle = `${result.date} - ${result.name}`;
+    row.title = `${result.seasonName.replace("&", "&amp;")}`;
+    row.subtitle = `${result.name.replace("&", "&amp;")}  \u2022  ${result.date}`;
+    row.order.label = result.seasonNumber.toString();
+    row.episodes.label = result.seasonEpisodeCount.toString();
   }
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow();
+    const order = new Gtk.Label();
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.add_prefix(order);
+    row.order = order;
     listItem.child = row;
   }
   bindMovieItem(listView, listItem) {
@@ -545,6 +594,7 @@ var MediaPicker = GObject2.registerClass({
     const row = listItem.child;
     row.title = result.name.replace("&", "&amp;");
     row.subtitle = result.date;
+    row.order.label = (listItem.get_position() + 1).toString();
   }
   onSwitchPage(stack) {
     const page = stack.visible_child_name;

@@ -22,7 +22,8 @@ export const MediaPicker = GObject.registerClass({
     "groupingsDropdown",
     "select",
     "back",
-    // "progressBar",
+    "progressBar",
+    "progressBarRevealer",
   ],
   Signals: {
     "cancelled": {
@@ -37,10 +38,25 @@ export const MediaPicker = GObject.registerClass({
     super()
     this._mediaApi = new TMDB()
     this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name")
+  }
 
-    // setInterval(() => {
-    //   this._progressBar.pulse()
-    // }, 180)
+  set isBusy(v) {
+    const id = this._isBusy
+
+    if (v && id == null) {
+      this._progressBarRevealer.reveal_child = v
+      this._isBusy = setInterval(() => {
+        this._progressBar.pulse()
+      }, 180)
+    } else {
+      clearInterval(id)
+      this._isBusy = null
+      this._progressBarRevealer.reveal_child = v
+    }
+  }
+
+  get isBusy() {
+    return this._isBusy != null
   }
 
   onCancel(button) {
@@ -70,9 +86,11 @@ export const MediaPicker = GObject.registerClass({
 
     const store = kind === "tv" ? this._shows : this._movies
 
+    this.isBusy = true
     this._mediaApi.search(kind, query)
       .then((res) => {
         store.remove_all()
+        this.isBusy = false
 
         for (const result of res.results) {
           store.append(new MediaInfo({
@@ -107,7 +125,7 @@ export const MediaPicker = GObject.registerClass({
     const show = model.get_selected_item()
     this._stack.set_visible_child_name("season")
 
-    // this._groupings.remove_all()
+    this.isBusy = true
     this._mediaApi.groupings(show.id)
       .then((res) => {
         this._groupings.remove_all()
@@ -122,9 +140,9 @@ export const MediaPicker = GObject.registerClass({
     const show = this._showsSelect.get_selected_item()
     const group = dropdown.get_selected_item()
 
-    // this._seasons.remove_all()
     this._mediaApi.seasons(show.id, group.id)
       .then((res) => {
+        this.isBusy = false
         this._seasons.remove_all()
         res.results.forEach((season) => {
           this._seasons.append(new MediaInfo({
@@ -134,6 +152,7 @@ export const MediaPicker = GObject.registerClass({
             seasonName: season.name,
             seasonNumber: season.number,
             seasonOverview: season.overview,
+            seasonEpisodeCount: season.episode_count,
           }))
         })
       })
@@ -177,18 +196,10 @@ export const MediaPicker = GObject.registerClass({
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow()
     const order = new Gtk.Label()
-    const episodes = new Gtk.Button()
-    episodes.halign = Gtk.Align.CENTER
-    episodes.valign = Gtk.Align.CENTER
-    episodes.add_css_class("accent")
-    episodes.add_css_class("heading")
     order.width_chars = 2
     order.add_css_class("title-4")
-    row.use_markup = false
     row.add_prefix(order)
-    row.add_suffix(episodes)
     row.order = order
-    row.episodes = episodes
     listItem.child = row
   }
 

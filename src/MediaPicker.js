@@ -87,7 +87,11 @@ export const MediaPicker = GObject.registerClass({
 
   setupShowItem(listView, listItem) {
     const row = new Adw.ActionRow()
-    // const row = new Gtk.Label()
+    const order = new Gtk.Label()
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.add_prefix(order)
+    row.order = order
     listItem.child = row
   }
 
@@ -96,6 +100,7 @@ export const MediaPicker = GObject.registerClass({
     const row = listItem.child
     row.title = result.name.replace("&", "&amp;")
     row.subtitle = result.date
+    row.order.label = (listItem.get_position() + 1).toString()
   }
 
   onShowSelect(model, position, count) {
@@ -144,18 +149,46 @@ export const MediaPicker = GObject.registerClass({
 
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    const order = new Gtk.Label()
+    const episodes = new Gtk.Button()
+    episodes.halign = Gtk.Align.CENTER
+    episodes.valign = Gtk.Align.CENTER
+    episodes.add_css_class("accent")
+    episodes.add_css_class("heading")
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.use_markup = false
+    row.add_prefix(order)
+    row.add_suffix(episodes)
+    row.order = order
+    row.episodes = episodes
     listItem.child = row
   }
 
   bindSeasonItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
-    row.title = `${result.seasonNumber}) ${result.seasonName.replace("&", "&amp;")}`
-    row.subtitle = `${result.date} - ${result.name}`
+    row.title = `${result.seasonName.replace("&", "&amp;")}`
+    row.subtitle = `${result.name.replace("&", "&amp;")}  •  ${result.date}`
+    row.order.label = result.seasonNumber.toString()
+    row.episodes.label = result.seasonEpisodeCount.toString()
   }
 
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    const order = new Gtk.Label()
+    const episodes = new Gtk.Button()
+    episodes.halign = Gtk.Align.CENTER
+    episodes.valign = Gtk.Align.CENTER
+    episodes.add_css_class("accent")
+    episodes.add_css_class("heading")
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.use_markup = false
+    row.add_prefix(order)
+    row.add_suffix(episodes)
+    row.order = order
+    row.episodes = episodes
     listItem.child = row
   }
 
@@ -164,6 +197,7 @@ export const MediaPicker = GObject.registerClass({
     const row = listItem.child
     row.title = result.name.replace("&", "&amp;")
     row.subtitle = result.date
+    row.order.label = (listItem.get_position() + 1).toString()
   }
 
   onSwitchPage(stack) {

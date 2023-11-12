@@ -426,6 +426,7 @@ var MediaPicker = GObject2.registerClass({
   Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
   InternalChildren: [
     "searchEntry",
+    "showTitle",
     "stack",
     "shows",
     "showsSelect",
@@ -522,6 +523,7 @@ var MediaPicker = GObject2.registerClass({
   onShowSelect(model, position, count) {
     const show = model.get_selected_item();
     this._stack.set_visible_child_name("season");
+    this._showTitle.label = show.name;
     this.isBusy = true;
     this._mediaApi.groupings(show.id).then((res) => {
       this._groupings.remove_all();
@@ -602,6 +604,7 @@ var MediaPicker = GObject2.registerClass({
     this._select.sensitive = page !== "tv";
     this._back.sensitive = page === "season";
     this._searchEntry.visible = page !== "season";
+    this._showTitle.visible = page === "season";
     this._groupingsDropdown.visible = page === "season";
   }
 });

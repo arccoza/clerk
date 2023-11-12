@@ -71,20 +71,35 @@ flat</property>
                 <signal name="notify::selected-item" handler="onGroupingSelect"/>
               </object>
             </child>
+            <child type="center">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkSearchEntry" id="searchEntry">
+                    <property name="placeholder-text">Search for media</property>
+                    <property name="search-delay">250</property>
+                    <property name="width-chars">30</property>
+                    <signal name="search-changed" handler="onSearchChanged"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="showTitle">
+                    <property name="ellipsize">middle</property>
+                    <property name="label">[title]</property>
+                    <property name="lines">1</property>
+                    <property name="visible">False</property>
+                    <style>
+                      <class name="heading"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
             <child type="start">
               <object class="GtkButton" id="back">
                 <property name="css-classes">raised</property>
                 <property name="icon-name">carousel-arrow-previous-symbolic</property>
                 <property name="sensitive">False</property>
                 <signal name="clicked" handler="onBack"/>
-              </object>
-            </child>
-            <child type="center">
-              <object class="GtkSearchEntry" id="searchEntry">
-                <property name="placeholder-text">Search for media</property>
-                <property name="search-delay">250</property>
-                <property name="width-chars">30</property>
-                <signal name="search-changed" handler="onSearchChanged"/>
               </object>
             </child>
           </object>

@@ -44,21 +44,6 @@ export const ClerkWindow = GObject.registerClass({
     this.addFiles(files)
   }
 
-  setupFileItem(listView, listItem) {
-    const row = new Adw.ActionRow()
-    row.set_title_lines(1)
-    row.set_subtitle_lines(1)
-    listItem.child = row
-  }
-
-  bindFileItem(listView, listItem) {
-    const file = listItem.item
-    const row = listItem.child
-    row.icon_name = "checkbox"
-    row.title = file.get_basename()
-    row.subtitle = file.get_parent()?.get_path() || ""
-  }
-
   onMediaSearchOpen(button) {
     console.log("onMediaSearchOpen", button)
     this._mediaPicker.show()
@@ -74,6 +59,21 @@ export const ClerkWindow = GObject.registerClass({
     }
 
     picker.hide()
+  }
+
+  setupFileItem(listView, listItem) {
+    const row = new Adw.ActionRow()
+    row.set_title_lines(1)
+    row.set_subtitle_lines(1)
+    listItem.child = row
+  }
+
+  bindFileItem(listView, listItem) {
+    const file = listItem.item
+    const row = listItem.child
+    row.icon_name = "checkbox"
+    row.title = file.get_basename()
+    row.subtitle = file.get_parent()?.get_path() || ""
   }
 
   setupRenameItem(listView, listItem) {

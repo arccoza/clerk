@@ -191,10 +191,10 @@ export class TMDB {
           ret.results.push({
             id: episode.id,
             name: episode.name,
-            number: episode.episode_number,
+            number: episode.order + 1,
             air_date: episode.air_date,
             overview: episode.overview,
-            season_number: episode.season_number,
+            season_number: group.order,
           })
         }
       }

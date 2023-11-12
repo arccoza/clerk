@@ -14,32 +14,34 @@
         <property name="vexpand">True</property>
         <child>
           <object class="AdwHeaderBar">
+            <property name="css-classes">flat</property>
             <property name="decoration-layout">icon:close</property>
             <property name="show-end-title-buttons">False</property>
-            <child type="title">
+            <child type="start">
               <object class="GtkStackSwitcher" id="switch">
-                <property name="css-classes">linked</property>
                 <property name="stack">stack</property>
               </object>
             </child>
-            <child type="start">
+            <child type="title">
+              <object class="GtkLabel"/>
+            </child>
+            <child type="end">
               <object class="GtkButton" id="cancel">
-                <property name="css-classes">destructive-action
-raised</property>
+                <property name="css-classes">error
+flat</property>
                 <property name="icon-name">window-close-symbolic</property>
                 <signal name="clicked" handler="onCancel"/>
                 <child>
                   <object class="AdwButtonContent">
                     <property name="icon-name">window-close-symbolic</property>
-                    <property name="label">Cancel</property>
                   </object>
                 </child>
               </object>
             </child>
             <child type="end">
               <object class="GtkButton" id="select">
-                <property name="css-classes">suggested-action
-raised</property>
+                <property name="css-classes">accent
+flat</property>
                 <property name="icon-name">emblem-ok-symbolic</property>
                 <signal name="clicked" handler="onSelect"/>
                 <child>

@@ -180,7 +180,7 @@ export class TMDB {
       }
       
     } else {
-      const url = `${this._baseUrl}/tv/episode_group/${groupId}/?language=${this._language}`
+      const url = `${this._baseUrl}/tv/episode_group/${groupId}?language=${this._language}`
       const res = await this.get(url)
       const idx = res.groups.reduce((a, g, i) => (a[g.order] = i, a), {})
       

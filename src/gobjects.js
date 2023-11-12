@@ -12,6 +12,7 @@ export const MediaInfo = GObject.registerClass({
     seasonName: GObject.ParamSpec.string("season-name", "Season Name", "The season name", GObject.ParamFlags.READWRITE, ""),
     seasonNumber: GObject.ParamSpec.double("season-number", "Season Number", "The season number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     seasonOverview: GObject.ParamSpec.string("season-overview", "Season Overview", "The season overview", GObject.ParamFlags.READWRITE, ""),
+    seasonEpisodeCount: GObject.ParamSpec.double("season-episode-count", "Season Episode Count", "The episode count for the season", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     episodeName: GObject.ParamSpec.string("episode-name", "Episode Name", "The episode name", GObject.ParamFlags.READWRITE, ""),
     episodeNumber: GObject.ParamSpec.double("episode-number", "Episode Number", "The episode number", GObject.ParamFlags.READWRITE, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1),
     episodeOverview: GObject.ParamSpec.string("episode-overview", "Episode Overview", "The episode overview", GObject.ParamFlags.READWRITE, ""),

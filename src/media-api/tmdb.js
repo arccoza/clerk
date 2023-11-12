@@ -164,17 +164,19 @@ export class TMDB {
         pending.push(this.get(url))
       }
 
-      const res = await Promise.all(pending)
+      const all = await Promise.all(pending)
       
-      for (const episode of res.episodes){
-        ret.results.push({
-          id: episode.id,
-          name: episode.name,
-          number: episode.episode_number,
-          air_date: episode.air_date,
-          overview: episode.overview,
-          season_number: episode.season_number,
-        })
+      for (const res of all) {
+        for (const episode of res.episodes){
+          ret.results.push({
+            id: episode.id,
+            name: episode.name,
+            number: episode.episode_number,
+            air_date: episode.air_date,
+            overview: episode.overview,
+            season_number: episode.season_number,
+          })
+        }
       }
       
     } else {

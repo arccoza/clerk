@@ -105,9 +105,7 @@
 	(3,95,"GtkProgressBar","progressBar",94,None,None,None,None,None),
 	(3,97,"GtkBox",None,20,None,"center",None,1,None),
 	(3,98,"GtkSearchEntry","searchEntry",97,None,None,None,None,None),
-	(3,99,"(external)","30",None,None,None,None,None,None),
-	(3,100,"GtkLabel","showTitle",97,None,None,None,1,None),
-	(3,101,"(external)","99",None,None,None,None,None,None)
+	(3,100,"GtkLabel","showTitle",97,None,None,None,1,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -271,6 +269,7 @@
 	(3,84,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
 	(3,84,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
 	(3,86,"GtkSingleSelection","autoselect","False",None,None,None,None,None,None,None,None,None),
+	(3,86,"GtkSingleSelection","can-unselect","True",None,None,None,None,None,None,None,None,None),
 	(3,86,"GtkSingleSelection","model",None,None,None,None,None,87,None,None,None,None),
 	(3,87,"GListStore","item-type","MediaInfo",None,None,None,None,None,None,None,None,None),
 	(3,88,"GtkButton","icon-name","carousel-arrow-previous-symbolic",None,None,None,None,None,None,None,None,None),

@@ -202,6 +202,7 @@ flat</property>
                                 <property name="model">
                                   <object class="GtkSingleSelection" id="showsSelect">
                                     <property name="autoselect">False</property>
+                                    <property name="can-unselect">True</property>
                                     <property name="model">
                                       <object class="GListStore" id="shows">
                                         <property name="item-type">MediaInfo</property>

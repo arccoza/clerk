@@ -504,23 +504,10 @@ var MediaPicker = GObject2.registerClass({
       }
     }).catch((err) => console.error(err));
   }
-  setupShowItem(listView, listItem) {
-    const row = new Adw.ActionRow();
-    const order = new Gtk.Label();
-    order.width_chars = 2;
-    order.add_css_class("title-4");
-    row.add_prefix(order);
-    row.order = order;
-    listItem.child = row;
-  }
-  bindShowItem(listView, listItem) {
-    const result = listItem.item;
-    const row = listItem.child;
-    row.title = result.name.replace("&", "&amp;");
-    row.subtitle = result.date;
-    row.order.label = (listItem.get_position() + 1).toString();
-  }
   onShowSelect(model, position, count) {
+    if (!model.is_selected(position)) {
+      return;
+    }
     const show = model.get_selected_item();
     this._stack.set_visible_child_name("season");
     this._showTitle.label = show.name;
@@ -557,6 +544,41 @@ var MediaPicker = GObject2.registerClass({
   onBack(button) {
     this._stack.set_visible_child_name("tv");
   }
+  setupMovieItem(listView, listItem) {
+    const row = new Adw.ActionRow();
+    const order = new Gtk.Label();
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.add_prefix(order);
+    row.order = order;
+    listItem.child = row;
+  }
+  bindMovieItem(listView, listItem) {
+    const result = listItem.item;
+    const row = listItem.child;
+    row.title = result.name.replace("&", "&amp;");
+    row.subtitle = result.date;
+    row.order.label = (listItem.get_position() + 1).toString();
+  }
+  setupShowItem(listView, listItem) {
+    const row = new Adw.ActionRow();
+    const order = new Gtk.Label();
+    const arrow = new Gtk.Image();
+    arrow.icon_name = "carousel-arrow-next-symbolic";
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.add_prefix(order);
+    row.add_suffix(arrow);
+    row.order = order;
+    listItem.child = row;
+  }
+  bindShowItem(listView, listItem) {
+    const result = listItem.item;
+    const row = listItem.child;
+    row.title = result.name.replace("&", "&amp;");
+    row.subtitle = result.date;
+    row.order.label = (listItem.get_position() + 1).toString();
+  }
   setupSeasonItem(listView, listItem) {
     const row = new Adw.ActionRow();
     const order = new Gtk.Label();
@@ -582,22 +604,6 @@ var MediaPicker = GObject2.registerClass({
     row.order.label = result.seasonNumber.toString();
     row.episodes.label = result.seasonEpisodeCount.toString();
   }
-  setupMovieItem(listView, listItem) {
-    const row = new Adw.ActionRow();
-    const order = new Gtk.Label();
-    order.width_chars = 2;
-    order.add_css_class("title-4");
-    row.add_prefix(order);
-    row.order = order;
-    listItem.child = row;
-  }
-  bindMovieItem(listView, listItem) {
-    const result = listItem.item;
-    const row = listItem.child;
-    row.title = result.name.replace("&", "&amp;");
-    row.subtitle = result.date;
-    row.order.label = (listItem.get_position() + 1).toString();
-  }
   onSwitchPage(stack) {
     const page = stack.visible_child_name;
     this._searchEntry.set_text("");
@@ -606,6 +612,9 @@ var MediaPicker = GObject2.registerClass({
     this._searchEntry.visible = page !== "season";
     this._showTitle.visible = page === "season";
     this._groupingsDropdown.visible = page === "season";
+    if (page === "tv") {
+      this._showsSelect.unselect_item(this._showsSelect.get_selected());
+    }
   }
 });
 function get_selected_items(select) {
@@ -656,19 +665,6 @@ var ClerkWindow = GObject3.registerClass({
     const files = filePicker.get_files();
     this.addFiles(files);
   }
-  setupFileItem(listView, listItem) {
-    const row = new Adw2.ActionRow();
-    row.set_title_lines(1);
-    row.set_subtitle_lines(1);
-    listItem.child = row;
-  }
-  bindFileItem(listView, listItem) {
-    const file = listItem.item;
-    const row = listItem.child;
-    row.icon_name = "checkbox";
-    row.title = file.get_basename();
-    row.subtitle = file.get_parent()?.get_path() || "";
-  }
   onMediaSearchOpen(button) {
     console.log("onMediaSearchOpen", button);
     this._mediaPicker.show();
@@ -681,6 +677,19 @@ var ClerkWindow = GObject3.registerClass({
       this._renames.append(item);
     }
     picker.hide();
+  }
+  setupFileItem(listView, listItem) {
+    const row = new Adw2.ActionRow();
+    row.set_title_lines(1);
+    row.set_subtitle_lines(1);
+    listItem.child = row;
+  }
+  bindFileItem(listView, listItem) {
+    const file = listItem.item;
+    const row = listItem.child;
+    row.icon_name = "checkbox";
+    row.title = file.get_basename();
+    row.subtitle = file.get_parent()?.get_path() || "";
   }
   setupRenameItem(listView, listItem) {
     const row = new Adw2.ActionRow();

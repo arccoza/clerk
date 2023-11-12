@@ -105,6 +105,10 @@ export const MediaPicker = GObject.registerClass({
   }
 
   onShowSelect(model, position, count) {
+    if (!model.is_selected(position)) {
+      return
+    }
+
     const show = model.get_selected_item()
     this._stack.set_visible_child_name("season")
     this._showTitle.label = show.name
@@ -171,9 +175,12 @@ export const MediaPicker = GObject.registerClass({
   setupShowItem(listView, listItem) {
     const row = new Adw.ActionRow()
     const order = new Gtk.Label()
+    const arrow = new Gtk.Image()
+    arrow.icon_name = "carousel-arrow-next-symbolic"
     order.width_chars = 2
     order.add_css_class("title-4")
     row.add_prefix(order)
+    row.add_suffix(arrow)
     row.order = order
     listItem.child = row
   }
@@ -221,6 +228,10 @@ export const MediaPicker = GObject.registerClass({
     this._searchEntry.visible = page !== "season"
     this._showTitle.visible = page === "season"
     this._groupingsDropdown.visible = page === "season"
+
+    if (page === "tv") {
+      this._showsSelect.unselect_item(this._showsSelect.get_selected())
+    }
   }
 })
 

@@ -78,17 +78,23 @@ export const ClerkWindow = GObject.registerClass({
 
   setupRenameItem(listView, listItem) {
     const row = new Adw.ActionRow()
+    const order = new Gtk.Label()
+    order.width_chars = 2
+    order.add_css_class("title-4")
+    row.add_prefix(order)
     row.set_title_lines(1)
     row.set_subtitle_lines(1)
+    row.order = order
     listItem.child = row
   }
 
   bindRenameItem(listView, listItem) {
     const rename = listItem.item
     const row = listItem.child
-    row.icon_name = "checkbox"
+    // row.icon_name = "checkbox"
     row.title = rename.episodeName || rename.name
     row.subtitle = rename.date
+    row.order.label = rename.episodeNumber?.toString() || "•"
   }
 
   addFiles(files) {

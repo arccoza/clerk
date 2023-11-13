@@ -168,6 +168,7 @@ export const MediaPicker = GObject.registerClass({
     const show = this._showsSelect.get_selected_item()
     const group = dropdown.get_selected_item()
 
+    this.isBusy = true
     this._mediaApi.seasons(show.id, group.id)
       .then((res) => {
         this.isBusy = false

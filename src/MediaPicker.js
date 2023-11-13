@@ -45,14 +45,16 @@ export const MediaPicker = GObject.registerClass({
     const id = this._isBusy
 
     if (v && id == null) {
-      this._progressBarRevealer.reveal_child = v
+      this._stack.sensitive = false
+      this._progressBarRevealer.reveal_child = true
       this._isBusy = setInterval(() => {
         this._progressBar.pulse()
       }, 180)
     } else {
       clearInterval(id)
       this._isBusy = null
-      this._progressBarRevealer.reveal_child = v
+      this._progressBarRevealer.reveal_child = false
+      this._stack.sensitive = true
     }
   }
 

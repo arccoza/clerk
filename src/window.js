@@ -18,6 +18,7 @@ export const ClerkWindow = GObject.registerClass({
   constructor(application) {
     super({ application })
 
+    this._mediaPicker.transient_for = this
     this._mediaPicker.connect("cancelled", this.onMediaCancelled.bind(this))
     this._mediaPicker.connect("selected", this.onMediaAdded.bind(this))
   }

@@ -401,7 +401,7 @@ var TMDB = class {
         }
       }
     } else {
-      const url = `${this._baseUrl}/tv/episode_group/${groupId}/?language=${this._language}`;
+      const url = `${this._baseUrl}/tv/episode_group/${groupId}?language=${this._language}`;
       const res = await this.get(url);
       const idx = res.groups.reduce((a, g, i) => (a[g.order] = i, a), {});
       for (const season of seasons) {
@@ -410,10 +410,10 @@ var TMDB = class {
           ret.results.push({
             id: episode.id,
             name: episode.name,
-            number: episode.episode_number,
+            number: episode.order + 1,
             air_date: episode.air_date,
             overview: episode.overview,
-            season_number: episode.season_number
+            season_number: group.order
           });
         }
       }
@@ -680,6 +680,7 @@ var ClerkWindow = GObject3.registerClass({
 }, class ClerkWindow2 extends Adw2.ApplicationWindow {
   constructor(application) {
     super({ application });
+    this._mediaPicker.transient_for = this;
     this._mediaPicker.connect("cancelled", this.onMediaCancelled.bind(this));
     this._mediaPicker.connect("selected", this.onMediaAdded.bind(this));
   }
@@ -726,16 +727,21 @@ var ClerkWindow = GObject3.registerClass({
   }
   setupRenameItem(listView, listItem) {
     const row = new Adw2.ActionRow();
+    const order = new Gtk2.Label();
+    order.width_chars = 2;
+    order.add_css_class("title-4");
+    row.add_prefix(order);
     row.set_title_lines(1);
     row.set_subtitle_lines(1);
+    row.order = order;
     listItem.child = row;
   }
   bindRenameItem(listView, listItem) {
     const rename = listItem.item;
     const row = listItem.child;
-    row.icon_name = "checkbox";
     row.title = rename.episodeName || rename.name;
     row.subtitle = rename.date;
+    row.order.label = rename.episodeNumber?.toString() || "\u2022";
   }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {

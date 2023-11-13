@@ -271,5 +271,7 @@ view</property>
     <property name="select-multiple">True</property>
     <signal name="response" handler="onFilesAdded"/>
   </object>
-  <object class="MediaPicker" id="mediaPicker"/>
+  <object class="MediaPicker" id="mediaPicker">
+    <property name="modal">True</property>
+  </object>
 </interface>

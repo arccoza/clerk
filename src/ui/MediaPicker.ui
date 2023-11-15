@@ -167,8 +167,7 @@ flat</property>
                             <property name="vexpand">True</property>
                             <child>
                               <object class="GtkListView" id="moviesList">
-                                <property name="css-classes">navigation-sidebar
-rich-list</property>
+                                <property name="css-classes">navigation-sidebar</property>
                                 <property name="factory">
                                   <object class="GtkSignalListItemFactory">
                                     <signal name="setup" handler="setupMovieItem"/>
@@ -217,8 +216,7 @@ rich-list</property>
                             <property name="vexpand">True</property>
                             <child>
                               <object class="GtkListView" id="showsList">
-                                <property name="css-classes">navigation-sidebar
-rich-list</property>
+                                <property name="css-classes">navigation-sidebar</property>
                                 <property name="factory">
                                   <object class="GtkSignalListItemFactory">
                                     <signal name="setup" handler="setupShowItem"/>
@@ -270,8 +268,7 @@ rich-list</property>
                             <property name="vexpand">True</property>
                             <child>
                               <object class="GtkListView" id="seasonsList">
-                                <property name="css-classes">rich-list
-navigation-sidebar</property>
+                                <property name="css-classes">navigation-sidebar</property>
                                 <property name="factory">
                                   <object class="GtkSignalListItemFactory">
                                     <signal name="setup" handler="setupSeasonItem"/>

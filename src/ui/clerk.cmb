@@ -3,13 +3,16 @@
 <cambalache-project version="0.13.1" target_tk="gtk-4.0">
   <ui>
 	(1,1,"clerk.ui","ClerkWindow.ui",None,None,None,None,None,None,None),
-	(3,1,None,"MediaPicker.ui",None,None,None,None,None,None,None)
+	(3,1,None,"MediaPicker.ui",None,None,None,None,None,None,None),
+	(4,1,None,"DetailRow.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(1,"gtk","4.2",None),
 	(1,"libadwaita","1.0",None),
 	(3,"gtk","4.2",None),
-	(3,"libadwaita","1.0",None)
+	(3,"libadwaita","1.0",None),
+	(4,"gtk","4.2",None),
+	(4,"libadwaita","1.0",None)
   </ui_library>
   <object>
 	(1,1,"AdwApplicationWindow","ClerkWindow",None,None,None,None,-1,None),
@@ -109,7 +112,13 @@
 	(3,102,"GtkToggleButton","moviesTab",101,None,None,None,-1,None),
 	(3,103,"GtkToggleButton","showsTab",101,None,None,None,-1,None),
 	(3,104,"AdwButtonContent",None,102,None,None,None,-1,None),
-	(3,105,"AdwButtonContent",None,103,None,None,None,-1,None)
+	(3,105,"AdwButtonContent",None,103,None,None,None,-1,None),
+	(4,1,"GtkBox","DetailRow",None,None,None,None,-1,None),
+	(4,2,"GtkBox","titles",1,None,None,None,1,None),
+	(4,3,"GtkLabel","title",2,None,None,None,None,None),
+	(4,4,"GtkLabel","subtitle",2,None,None,None,1,None),
+	(4,5,"AdwBin","prefix",1,None,None,None,None,None),
+	(4,6,"AdwBin","suffix",1,None,None,None,2,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -303,7 +312,18 @@
 	(3,105,"AdwButtonContent","icon-name","video-display-symbolic",None,None,None,None,None,None,None,None,None),
 	(3,105,"AdwButtonContent","label","Shows",None,None,None,None,None,None,None,None,None),
 	(3,105,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
-	(3,105,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None)
+	(3,105,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
+	(4,2,"GtkBox","spacing","4",None,None,None,None,None,None,None,None,None),
+	(4,2,"GtkOrientable","orientation","vertical",None,None,None,None,None,None,None,None,None),
+	(4,2,"GtkWidget","valign","center",None,None,None,None,None,None,None,None,None),
+	(4,3,"GtkLabel","ellipsize","end",None,None,None,None,None,None,None,None,None),
+	(4,3,"GtkLabel","label","[title]",None,None,None,None,None,None,None,None,None),
+	(4,3,"GtkLabel","lines","1",None,None,None,None,None,None,None,None,None),
+	(4,3,"GtkWidget","halign","start",None,None,None,None,None,None,None,None,None),
+	(4,4,"GtkLabel","ellipsize","end",None,None,None,None,None,None,None,None,None),
+	(4,4,"GtkLabel","label","[subtitle]",None,None,None,None,None,None,None,None,None),
+	(4,4,"GtkLabel","lines","1",None,None,None,None,None,None,None,None,None),
+	(4,4,"GtkWidget","halign","start",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),
@@ -331,10 +351,16 @@
 	(3,95,"GtkWidget",1,1,None,None,None,None,None,None),
 	(3,95,"GtkWidget",2,2,None,1,None,None,None,None),
 	(3,100,"GtkWidget",1,1,None,None,None,None,None,None),
-	(3,100,"GtkWidget",2,2,None,1,None,None,None,None)
+	(3,100,"GtkWidget",2,2,None,1,None,None,None,None),
+	(4,4,"GtkWidget",1,1,None,None,None,None,None,None),
+	(4,4,"GtkWidget",2,2,None,1,None,None,None,None),
+	(4,3,"GtkWidget",1,1,None,None,None,None,None,None),
+	(4,4,"GtkWidget",2,3,None,1,None,None,None,None)
   </object_data>
   <object_data_arg>
 	(3,95,"GtkWidget",2,2,"name","osd"),
-	(3,100,"GtkWidget",2,2,"name","heading")
+	(3,100,"GtkWidget",2,2,"name","heading"),
+	(4,4,"GtkWidget",2,2,"name","caption"),
+	(4,4,"GtkWidget",2,3,"name","dim-label")
   </object_data_arg>
 </cambalache-project>

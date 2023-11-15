@@ -3,5 +3,6 @@
   <gresource prefix="/com/arccoza/clerk">
     <file preprocess="xml-stripblanks">ui/ClerkWindow.ui</file>
     <file preprocess="xml-stripblanks">ui/MediaPicker.ui</file>
+    <file preprocess="xml-stripblanks">ui/DetailRow.ui</file>
   </gresource>
 </gresources>

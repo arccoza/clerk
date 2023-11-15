@@ -25,6 +25,8 @@ export const MediaPicker = GObject.registerClass({
     "back",
     "progressBar",
     "progressBarRevealer",
+    "moviesTab",
+    "showsTab",
   ],
   Signals: {
     "cancelled": {
@@ -39,6 +41,8 @@ export const MediaPicker = GObject.registerClass({
     super()
     this._mediaApi = new TMDB()
     this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name")
+    this._moviesTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "movie"))
+    this._showsTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "tv"))
   }
 
   set isBusy(v) {
@@ -195,6 +199,24 @@ export const MediaPicker = GObject.registerClass({
     this._stack.set_visible_child_name("tv")
   }
 
+  onTabChanged(button, page) {
+    this._stack.visible_child_name = page
+  }
+
+  onSwitchPage(stack) {
+    const page = stack.visible_child_name
+    this._searchEntry.set_text("")
+    this._select.sensitive = page !== "tv"
+    this._back.sensitive = page === "season"
+    this._searchEntry.visible = page !== "season"
+    this._showTitle.visible = page === "season"
+    this._groupingsDropdown.visible = page === "season"
+
+    if (page === "tv") {
+      this._showsSelect.unselect_item(this._showsSelect.get_selected())
+    }
+  }
+
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow()
     const order = new Gtk.Label()
@@ -259,20 +281,6 @@ export const MediaPicker = GObject.registerClass({
     row.subtitle = `${result.name.replace("&", "&amp;")}  •  ${result.date}`
     row.order.label = result.seasonNumber.toString()
     row.episodes.label = result.seasonEpisodeCount.toString()
-  }
-
-  onSwitchPage(stack) {
-    const page = stack.visible_child_name
-    this._searchEntry.set_text("")
-    this._select.sensitive = page !== "tv"
-    this._back.sensitive = page === "season"
-    this._searchEntry.visible = page !== "season"
-    this._showTitle.visible = page === "season"
-    this._groupingsDropdown.visible = page === "season"
-
-    if (page === "tv") {
-      this._showsSelect.unselect_item(this._showsSelect.get_selected())
-    }
   }
 })
 

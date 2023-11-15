@@ -70,7 +70,6 @@
 	(3,18,"AdwButtonContent",None,4,None,None,None,-1,None),
 	(3,19,"AdwButtonContent",None,15,None,None,None,-1,None),
 	(3,20,"GtkActionBar","searchBar",2,None,None,None,2,None),
-	(3,29,"GtkStackSwitcher","switch",3,None,"start",None,None,None),
 	(3,30,"GtkStack","stack",2,None,None,None,4,None),
 	(3,32,"GtkStackPage","moviesPage",30,None,None,None,None,None),
 	(3,35,"GtkBox",None,32,None,None,None,-1,None),
@@ -105,7 +104,12 @@
 	(3,95,"GtkProgressBar","progressBar",94,None,None,None,None,None),
 	(3,97,"GtkBox",None,20,None,"center",None,1,None),
 	(3,98,"GtkSearchEntry","searchEntry",97,None,None,None,None,None),
-	(3,100,"GtkLabel","showTitle",97,None,None,None,1,None)
+	(3,100,"GtkLabel","showTitle",97,None,None,None,1,None),
+	(3,101,"GtkBox","tabs",3,None,None,None,-1,None),
+	(3,102,"GtkToggleButton","moviesTab",101,None,None,None,-1,None),
+	(3,103,"GtkToggleButton","showsTab",101,None,None,None,-1,None),
+	(3,104,"AdwButtonContent",None,102,None,None,None,-1,None),
+	(3,105,"AdwButtonContent",None,103,None,None,None,-1,None)
   </object>
   <object_property>
 	(1,1,"GtkWindow","default-height","720",None,None,None,None,None,None,None,None,None),
@@ -213,7 +217,6 @@
 	(3,18,"AdwButtonContent","icon-name","emblem-ok-symbolic",None,None,None,None,None,None,None,None,None),
 	(3,18,"AdwButtonContent","label","Select",None,None,None,None,None,None,None,None,None),
 	(3,19,"AdwButtonContent","icon-name","window-close-symbolic",None,None,None,None,None,None,None,None,None),
-	(3,29,"GtkStackSwitcher","stack","30",None,None,None,None,None,None,None,None,None),
 	(3,30,"GtkStack","transition-type","slide-left-right",None,None,None,None,None,None,None,None,None),
 	(3,30,"GtkWidget","margin-top","12",None,None,None,None,None,None,None,None,None),
 	(3,30,"GtkWidget","vexpand","True",None,None,None,None,None,None,None,None,None),
@@ -289,7 +292,18 @@
 	(3,100,"GtkLabel","ellipsize","middle",None,None,None,None,None,None,None,None,None),
 	(3,100,"GtkLabel","label","[title]",None,None,None,None,None,None,None,None,None),
 	(3,100,"GtkLabel","lines","1",None,None,None,None,None,None,None,None,None),
-	(3,100,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None)
+	(3,100,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None),
+	(3,101,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
+	(3,102,"GtkToggleButton","active","True",None,None,None,None,None,None,None,None,None),
+	(3,103,"GtkToggleButton","group","102",None,None,None,None,None,None,None,None,None),
+	(3,104,"AdwButtonContent","icon-name","emblem-videos-symbolic",None,None,None,None,None,None,None,None,None),
+	(3,104,"AdwButtonContent","label","Movies",None,None,None,None,None,None,None,None,None),
+	(3,104,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
+	(3,104,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
+	(3,105,"AdwButtonContent","icon-name","video-display-symbolic",None,None,None,None,None,None,None,None,None),
+	(3,105,"AdwButtonContent","label","Shows",None,None,None,None,None,None,None,None,None),
+	(3,105,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
+	(3,105,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(2,1,10,"GtkButton","clicked","onFilesAdd",None,None,None,None,None),

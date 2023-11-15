@@ -441,7 +441,9 @@ var MediaPicker = GObject2.registerClass({
     "select",
     "back",
     "progressBar",
-    "progressBarRevealer"
+    "progressBarRevealer",
+    "moviesTab",
+    "showsTab"
   ],
   Signals: {
     "cancelled": {
@@ -456,18 +458,22 @@ var MediaPicker = GObject2.registerClass({
     super();
     this._mediaApi = new TMDB();
     this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name");
+    this._moviesTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "movie"));
+    this._showsTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "tv"));
   }
   set isBusy(v) {
     const id = this._isBusy;
     if (v && id == null) {
-      this._progressBarRevealer.reveal_child = v;
+      this._stack.sensitive = false;
+      this._progressBarRevealer.reveal_child = true;
       this._isBusy = setInterval(() => {
         this._progressBar.pulse();
       }, 180);
     } else {
       clearInterval(id);
       this._isBusy = null;
-      this._progressBarRevealer.reveal_child = v;
+      this._progressBarRevealer.reveal_child = false;
+      this._stack.sensitive = true;
     }
   }
   get isBusy() {
@@ -555,6 +561,7 @@ var MediaPicker = GObject2.registerClass({
   onGroupingSelect(dropdown) {
     const show = this._showsSelect.get_selected_item();
     const group = dropdown.get_selected_item();
+    this.isBusy = true;
     this._mediaApi.seasons(show.id, group.id).then((res) => {
       this.isBusy = false;
       this._seasons.remove_all();
@@ -636,6 +643,10 @@ var MediaPicker = GObject2.registerClass({
     row.subtitle = `${result.name.replace("&", "&amp;")}  \u2022  ${result.date}`;
     row.order.label = result.seasonNumber.toString();
     row.episodes.label = result.seasonEpisodeCount.toString();
+  }
+  onTabChanged(button, page) {
+    console.log(">>>>>>>>", button.active, page);
+    this._stack.visible_child_name = page;
   }
   onSwitchPage(stack) {
     const page = stack.visible_child_name;

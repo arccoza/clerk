@@ -755,10 +755,10 @@ var ClerkWindow = GObject4.registerClass({
   }
   setupRenameItem(listView, listItem) {
     const order = new Gtk3.Label();
-    order.width_chars = 2;
+    order.width_chars = 5;
     order.add_css_class("title-4");
     const row = new DetailRow();
-    row.prefix.child = order;
+    row.suffix.child = order;
     row.order = order;
     listItem.child = row;
   }
@@ -767,7 +767,7 @@ var ClerkWindow = GObject4.registerClass({
     const row = listItem.child;
     row.title.label = rename.episodeName || rename.name;
     row.subtitle.label = rename.date;
-    row.order.label = rename.episodeNumber?.toString() || "\u2022";
+    row.order.label = `${rename.seasonNumber}x${rename.episodeNumber}`;
   }
   addFiles(files) {
     for (let i = 0, file; file = files.get_item(i), !!file && i < 1e3; i++) {

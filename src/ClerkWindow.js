@@ -82,10 +82,10 @@ export const ClerkWindow = GObject.registerClass({
 
   setupRenameItem(listView, listItem) {
     const order = new Gtk.Label()
-    order.width_chars = 2
+    order.width_chars = 5
     order.add_css_class("title-4")
     const row = new DetailRow()
-    row.prefix.child = order
+    row.suffix.child = order
     row.order = order
     listItem.child = row
   }
@@ -95,7 +95,7 @@ export const ClerkWindow = GObject.registerClass({
     const row = listItem.child
     row.title.label = rename.episodeName || rename.name
     row.subtitle.label = rename.date
-    row.order.label = rename.episodeNumber?.toString() || "•"
+    row.order.label = `${rename.seasonNumber}x${rename.episodeNumber}`
   }
 
   addFiles(files) {

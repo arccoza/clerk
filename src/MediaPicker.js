@@ -224,7 +224,7 @@ export const MediaPicker = GObject.registerClass({
     order.add_css_class("title-4")
     const row = new DetailRow()
     row.prefix.child = order
-    row.order.child = order
+    row.order = order
     listItem.child = row
   }
 

@@ -584,6 +584,21 @@ var MediaPicker = GObject2.registerClass({
   onBack(button) {
     this._stack.set_visible_child_name("tv");
   }
+  onTabChanged(button, page) {
+    this._stack.visible_child_name = page;
+  }
+  onSwitchPage(stack) {
+    const page = stack.visible_child_name;
+    this._searchEntry.set_text("");
+    this._select.sensitive = page !== "tv";
+    this._back.sensitive = page === "season";
+    this._searchEntry.visible = page !== "season";
+    this._showTitle.visible = page === "season";
+    this._groupingsDropdown.visible = page === "season";
+    if (page === "tv") {
+      this._showsSelect.unselect_item(this._showsSelect.get_selected());
+    }
+  }
   setupMovieItem(listView, listItem) {
     const row = new Adw.ActionRow();
     const order = new Gtk.Label();
@@ -644,22 +659,6 @@ var MediaPicker = GObject2.registerClass({
     row.order.label = result.seasonNumber.toString();
     row.episodes.label = result.seasonEpisodeCount.toString();
   }
-  onTabChanged(button, page) {
-    console.log(">>>>>>>>", button.active, page);
-    this._stack.visible_child_name = page;
-  }
-  onSwitchPage(stack) {
-    const page = stack.visible_child_name;
-    this._searchEntry.set_text("");
-    this._select.sensitive = page !== "tv";
-    this._back.sensitive = page === "season";
-    this._searchEntry.visible = page !== "season";
-    this._showTitle.visible = page === "season";
-    this._groupingsDropdown.visible = page === "season";
-    if (page === "tv") {
-      this._showsSelect.unselect_item(this._showsSelect.get_selected());
-    }
-  }
 });
 function get_selected_items(select) {
   const selection = select.get_selection();
@@ -673,13 +672,13 @@ function get_selected_items(select) {
   return items;
 }
 
-// src/window.js
+// src/ClerkWindow.js
 import GObject3 from "gi://GObject";
 import Gtk2 from "gi://Gtk";
 import Adw2 from "gi://Adw";
 var ClerkWindow = GObject3.registerClass({
   GTypeName: "ClerkWindow",
-  Template: "resource:///com/arccoza/clerk/window.ui",
+  Template: "resource:///com/arccoza/clerk/ClerkWindow.ui",
   InternalChildren: [
     "filesAdd",
     "filesUpdate",

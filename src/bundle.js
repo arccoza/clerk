@@ -204,9 +204,9 @@ Object.entries({ atob, btoa, fetch: fetch2, WebSocket }).forEach(([key, value]) 
 });
 
 // src/main.js
-import GObject4 from "gi://GObject";
+import GObject5 from "gi://GObject";
 import Gio4 from "gi://Gio";
-import Gtk3 from "gi://Gtk?version=4.0";
+import Gtk4 from "gi://Gtk?version=4.0";
 import Adw3 from "gi://Adw?version=1";
 
 // src/gobjects.js
@@ -242,9 +242,9 @@ var EpisodeGroup = GObject.registerClass({
 });
 
 // src/MediaPicker.js
-import GObject2 from "gi://GObject";
+import GObject3 from "gi://GObject";
 import Gio3 from "gi://Gio";
-import Gtk from "gi://Gtk";
+import Gtk2 from "gi://Gtk";
 import Adw from "gi://Adw";
 
 // src/media-api/utils.js
@@ -422,8 +422,25 @@ var TMDB = class {
   }
 };
 
+// src/DetailRow.js
+import GObject2 from "gi://GObject";
+import Gtk from "gi://Gtk";
+var DetailRow = GObject2.registerClass({
+  GTypeName: "DetailRow",
+  Template: "resource:///com/arccoza/clerk/ui/DetailRow.ui",
+  Children: [
+    "prefix",
+    "suffix",
+    "titles",
+    "title",
+    "subtitle"
+  ],
+  InternalChildren: []
+}, class DetailRow2 extends Gtk.Box {
+});
+
 // src/MediaPicker.js
-var MediaPicker = GObject2.registerClass({
+var MediaPicker = GObject3.registerClass({
   GTypeName: "MediaPicker",
   Template: "resource:///com/arccoza/clerk/ui/MediaPicker.ui",
   InternalChildren: [
@@ -457,7 +474,7 @@ var MediaPicker = GObject2.registerClass({
   constructor(window) {
     super();
     this._mediaApi = new TMDB();
-    this._groupingsDropdown.expression = new Gtk.PropertyExpression(EpisodeGroup, null, "name");
+    this._groupingsDropdown.expression = new Gtk2.PropertyExpression(EpisodeGroup, null, "name");
     this._moviesTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "movie"));
     this._showsTab.connect("clicked", (b) => b.active && this.onTabChanged(b, "tv"));
   }
@@ -600,53 +617,52 @@ var MediaPicker = GObject2.registerClass({
     }
   }
   setupMovieItem(listView, listItem) {
-    const row = new Adw.ActionRow();
-    const order = new Gtk.Label();
+    const order = new Gtk2.Label();
     order.width_chars = 2;
     order.add_css_class("title-4");
-    row.add_prefix(order);
-    row.order = order;
+    const row = new DetailRow();
+    row.prefix.child = order;
+    row.order.child = order;
     listItem.child = row;
   }
   bindMovieItem(listView, listItem) {
     const result = listItem.item;
     const row = listItem.child;
-    row.title = result.name.replace("&", "&amp;");
-    row.subtitle = result.date;
+    row.title.label = result.name;
+    row.subtitle.label = result.date;
     row.order.label = (listItem.get_position() + 1).toString();
   }
   setupShowItem(listView, listItem) {
-    const row = new Adw.ActionRow();
-    const order = new Gtk.Label();
-    const arrow = new Gtk.Image();
-    arrow.icon_name = "carousel-arrow-next-symbolic";
+    const order = new Gtk2.Label();
     order.width_chars = 2;
     order.add_css_class("title-4");
-    row.add_prefix(order);
-    row.add_suffix(arrow);
+    const arrow = new Gtk2.Image();
+    arrow.icon_name = "carousel-arrow-next-symbolic";
+    const row = new DetailRow();
+    row.prefix.child = order;
+    row.suffix.child = arrow;
     row.order = order;
     listItem.child = row;
   }
   bindShowItem(listView, listItem) {
     const result = listItem.item;
     const row = listItem.child;
-    row.title = result.name.replace("&", "&amp;");
-    row.subtitle = result.date;
+    row.title.label = result.name;
+    row.subtitle.label = result.date;
     row.order.label = (listItem.get_position() + 1).toString();
   }
   setupSeasonItem(listView, listItem) {
-    const row = new Adw.ActionRow();
-    const order = new Gtk.Label();
-    const episodes = new Gtk.Button();
-    episodes.halign = Gtk.Align.CENTER;
-    episodes.valign = Gtk.Align.CENTER;
-    episodes.add_css_class("accent");
-    episodes.add_css_class("heading");
+    const order = new Gtk2.Label();
     order.width_chars = 2;
     order.add_css_class("title-4");
-    row.use_markup = false;
-    row.add_prefix(order);
-    row.add_suffix(episodes);
+    const episodes = new Gtk2.Button();
+    episodes.halign = Gtk2.Align.CENTER;
+    episodes.valign = Gtk2.Align.CENTER;
+    episodes.add_css_class("accent");
+    episodes.add_css_class("heading");
+    const row = new DetailRow();
+    row.prefix.child = order;
+    row.suffix.child = episodes;
     row.order = order;
     row.episodes = episodes;
     listItem.child = row;
@@ -654,8 +670,8 @@ var MediaPicker = GObject2.registerClass({
   bindSeasonItem(listView, listItem) {
     const result = listItem.item;
     const row = listItem.child;
-    row.title = `${result.seasonName.replace("&", "&amp;")}`;
-    row.subtitle = `${result.name.replace("&", "&amp;")}  \u2022  ${result.date}`;
+    row.title.label = `${result.seasonName}`;
+    row.subtitle.label = `${result.name}  \u2022  ${result.date}`;
     row.order.label = result.seasonNumber.toString();
     row.episodes.label = result.seasonEpisodeCount.toString();
   }
@@ -673,10 +689,10 @@ function get_selected_items(select) {
 }
 
 // src/ClerkWindow.js
-import GObject3 from "gi://GObject";
-import Gtk2 from "gi://Gtk";
+import GObject4 from "gi://GObject";
+import Gtk3 from "gi://Gtk";
 import Adw2 from "gi://Adw";
-var ClerkWindow = GObject3.registerClass({
+var ClerkWindow = GObject4.registerClass({
   GTypeName: "ClerkWindow",
   Template: "resource:///com/arccoza/clerk/ui/ClerkWindow.ui",
   InternalChildren: [
@@ -703,7 +719,7 @@ var ClerkWindow = GObject3.registerClass({
   }
   onFilesAdded(filePicker, responseId) {
     console.log("onFilesAdded", responseId);
-    if (responseId !== Gtk2.ResponseType.ACCEPT) {
+    if (responseId !== Gtk3.ResponseType.ACCEPT) {
       return;
     }
     const files = filePicker.get_files();
@@ -723,34 +739,34 @@ var ClerkWindow = GObject3.registerClass({
     picker.hide();
   }
   setupFileItem(listView, listItem) {
-    const row = new Adw2.ActionRow();
-    row.set_title_lines(1);
-    row.set_subtitle_lines(1);
+    const order = new Gtk3.Label();
+    order.width_chars = 2;
+    const row = new DetailRow();
+    row.prefix.child = order;
+    row.order = order;
     listItem.child = row;
   }
   bindFileItem(listView, listItem) {
     const file = listItem.item;
     const row = listItem.child;
-    row.icon_name = "checkbox";
-    row.title = file.get_basename();
-    row.subtitle = file.get_parent()?.get_path() || "";
+    row.title.label = file.get_basename();
+    row.subtitle.label = file.get_parent()?.get_path() || "";
+    row.order.label = "\u2022";
   }
   setupRenameItem(listView, listItem) {
-    const row = new Adw2.ActionRow();
-    const order = new Gtk2.Label();
+    const order = new Gtk3.Label();
     order.width_chars = 2;
     order.add_css_class("title-4");
-    row.add_prefix(order);
-    row.set_title_lines(1);
-    row.set_subtitle_lines(1);
+    const row = new DetailRow();
+    row.prefix.child = order;
     row.order = order;
     listItem.child = row;
   }
   bindRenameItem(listView, listItem) {
     const rename = listItem.item;
     const row = listItem.child;
-    row.title = rename.episodeName || rename.name;
-    row.subtitle = rename.date;
+    row.title.label = rename.episodeName || rename.name;
+    row.subtitle.label = rename.date;
     row.order.label = rename.episodeNumber?.toString() || "\u2022";
   }
   addFiles(files) {
@@ -770,7 +786,7 @@ var ClerkWindow = GObject3.registerClass({
 import Soup3 from "gi://Soup";
 pkg.initGettext();
 pkg.initFormat();
-var ClerkApplication = GObject4.registerClass(
+var ClerkApplication = GObject5.registerClass(
   class ClerkApplication2 extends Adw3.Application {
     constructor() {
       super({ application_id: "com.arccoza.clerk", flags: Gio4.ApplicationFlags.DEFAULT_FLAGS });

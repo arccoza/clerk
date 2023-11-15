@@ -4,11 +4,16 @@
   <requires lib="gtk" version="4.2"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="DetailRow" parent="GtkBox">
+    <property name="margin-bottom">8</property>
+    <property name="margin-end">8</property>
+    <property name="margin-start">8</property>
+    <property name="margin-top">8</property>
     <child>
       <object class="AdwBin" id="prefix"/>
     </child>
     <child>
       <object class="GtkBox" id="titles">
+        <property name="hexpand">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <property name="valign">center</property>

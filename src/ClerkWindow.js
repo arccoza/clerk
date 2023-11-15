@@ -1,6 +1,7 @@
 import GObject from "gi://GObject"
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
+import { DetailRow } from "./DetailRow"
 
 
 export const ClerkWindow = GObject.registerClass({
@@ -63,28 +64,28 @@ export const ClerkWindow = GObject.registerClass({
   }
 
   setupFileItem(listView, listItem) {
-    const row = new Adw.ActionRow()
-    row.set_title_lines(1)
-    row.set_subtitle_lines(1)
+    const order = new Gtk.Label()
+    order.width_chars = 2
+    const row = new DetailRow()
+    row.prefix.child = order
+    row.order = order
     listItem.child = row
   }
 
   bindFileItem(listView, listItem) {
     const file = listItem.item
     const row = listItem.child
-    row.icon_name = "checkbox"
-    row.title = file.get_basename()
-    row.subtitle = file.get_parent()?.get_path() || ""
+    row.title.label = file.get_basename()
+    row.subtitle.label = file.get_parent()?.get_path() || ""
+    row.order.label = "•"
   }
 
   setupRenameItem(listView, listItem) {
-    const row = new Adw.ActionRow()
     const order = new Gtk.Label()
     order.width_chars = 2
     order.add_css_class("title-4")
-    row.add_prefix(order)
-    row.set_title_lines(1)
-    row.set_subtitle_lines(1)
+    const row = new DetailRow()
+    row.prefix.child = order
     row.order = order
     listItem.child = row
   }
@@ -92,9 +93,8 @@ export const ClerkWindow = GObject.registerClass({
   bindRenameItem(listView, listItem) {
     const rename = listItem.item
     const row = listItem.child
-    // row.icon_name = "checkbox"
-    row.title = rename.episodeName || rename.name
-    row.subtitle = rename.date
+    row.title.label = rename.episodeName || rename.name
+    row.subtitle.label = rename.date
     row.order.label = rename.episodeNumber?.toString() || "•"
   }
 

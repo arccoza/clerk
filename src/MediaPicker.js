@@ -4,6 +4,7 @@ import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
 import { TMDB } from "./media-api"
 import { MediaInfo, EpisodeGroup, } from "./gobjects"
+import { DetailRow } from "./DetailRow"
 
 
 export const MediaPicker = GObject.registerClass({
@@ -218,32 +219,32 @@ export const MediaPicker = GObject.registerClass({
   }
 
   setupMovieItem(listView, listItem) {
-    const row = new Adw.ActionRow()
     const order = new Gtk.Label()
     order.width_chars = 2
     order.add_css_class("title-4")
-    row.add_prefix(order)
-    row.order = order
+    const row = new DetailRow()
+    row.prefix.child = order
+    row.order.child = order
     listItem.child = row
   }
 
   bindMovieItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
-    row.title = result.name.replace("&", "&amp;")
-    row.subtitle = result.date
+    row.title.label = result.name
+    row.subtitle.label = result.date
     row.order.label = (listItem.get_position() + 1).toString()
   }
 
   setupShowItem(listView, listItem) {
-    const row = new Adw.ActionRow()
     const order = new Gtk.Label()
-    const arrow = new Gtk.Image()
-    arrow.icon_name = "carousel-arrow-next-symbolic"
     order.width_chars = 2
     order.add_css_class("title-4")
-    row.add_prefix(order)
-    row.add_suffix(arrow)
+    const arrow = new Gtk.Image()
+    arrow.icon_name = "carousel-arrow-next-symbolic"
+    const row = new DetailRow()
+    row.prefix.child = order
+    row.suffix.child = arrow
     row.order = order
     listItem.child = row
   }
@@ -251,24 +252,23 @@ export const MediaPicker = GObject.registerClass({
   bindShowItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
-    row.title = result.name.replace("&", "&amp;")
-    row.subtitle = result.date
+    row.title.label = result.name
+    row.subtitle.label = result.date
     row.order.label = (listItem.get_position() + 1).toString()
   }
 
   setupSeasonItem(listView, listItem) {
-    const row = new Adw.ActionRow()
     const order = new Gtk.Label()
+    order.width_chars = 2
+    order.add_css_class("title-4")
     const episodes = new Gtk.Button()
     episodes.halign = Gtk.Align.CENTER
     episodes.valign = Gtk.Align.CENTER
     episodes.add_css_class("accent")
     episodes.add_css_class("heading")
-    order.width_chars = 2
-    order.add_css_class("title-4")
-    row.use_markup = false
-    row.add_prefix(order)
-    row.add_suffix(episodes)
+    const row = new DetailRow()
+    row.prefix.child = order
+    row.suffix.child = episodes
     row.order = order
     row.episodes = episodes
     listItem.child = row
@@ -277,8 +277,8 @@ export const MediaPicker = GObject.registerClass({
   bindSeasonItem(listView, listItem) {
     const result = listItem.item
     const row = listItem.child
-    row.title = `${result.seasonName.replace("&", "&amp;")}`
-    row.subtitle = `${result.name.replace("&", "&amp;")}  •  ${result.date}`
+    row.title.label = `${result.seasonName}`
+    row.subtitle.label = `${result.name}  •  ${result.date}`
     row.order.label = result.seasonNumber.toString()
     row.episodes.label = result.seasonEpisodeCount.toString()
   }

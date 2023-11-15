@@ -8,7 +8,7 @@ import { MediaInfo, EpisodeGroup, } from "./gobjects"
 
 export const MediaPicker = GObject.registerClass({
   GTypeName: "MediaPicker",
-  Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
+  Template: "resource:///com/arccoza/clerk/ui/MediaPicker.ui",
   InternalChildren: [
     "searchEntry",
     "showTitle",

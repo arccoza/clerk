@@ -425,7 +425,7 @@ var TMDB = class {
 // src/MediaPicker.js
 var MediaPicker = GObject2.registerClass({
   GTypeName: "MediaPicker",
-  Template: "resource:///com/arccoza/clerk/MediaPicker.ui",
+  Template: "resource:///com/arccoza/clerk/ui/MediaPicker.ui",
   InternalChildren: [
     "searchEntry",
     "showTitle",
@@ -678,7 +678,7 @@ import Gtk2 from "gi://Gtk";
 import Adw2 from "gi://Adw";
 var ClerkWindow = GObject3.registerClass({
   GTypeName: "ClerkWindow",
-  Template: "resource:///com/arccoza/clerk/ClerkWindow.ui",
+  Template: "resource:///com/arccoza/clerk/ui/ClerkWindow.ui",
   InternalChildren: [
     "filesAdd",
     "filesUpdate",

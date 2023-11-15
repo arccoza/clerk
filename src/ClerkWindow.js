@@ -5,7 +5,7 @@ import Adw from "gi://Adw"
 
 export const ClerkWindow = GObject.registerClass({
   GTypeName: "ClerkWindow",
-  Template: "resource:///com/arccoza/clerk/ClerkWindow.ui",
+  Template: "resource:///com/arccoza/clerk/ui/ClerkWindow.ui",
   InternalChildren: [
     "filesAdd",
     "filesUpdate",

@@ -8,6 +8,7 @@
     <property name="margin-end">8</property>
     <property name="margin-start">8</property>
     <property name="margin-top">8</property>
+    <property name="spacing">4</property>
     <child>
       <object class="AdwBin" id="prefix"/>
     </child>

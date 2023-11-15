@@ -8,13 +8,14 @@
     <property name="margin-end">8</property>
     <property name="margin-start">8</property>
     <property name="margin-top">8</property>
-    <property name="spacing">4</property>
     <child>
       <object class="AdwBin" id="prefix"/>
     </child>
     <child>
       <object class="GtkBox" id="titles">
         <property name="hexpand">True</property>
+        <property name="margin-end">4</property>
+        <property name="margin-start">4</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <property name="valign">center</property>

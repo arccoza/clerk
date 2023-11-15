@@ -313,7 +313,6 @@
 	(3,105,"AdwButtonContent","label","Shows",None,None,None,None,None,None,None,None,None),
 	(3,105,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
 	(3,105,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
-	(4,1,"GtkBox","spacing","4",None,None,None,None,None,None,None,None,None),
 	(4,1,"GtkWidget","margin-bottom","8",None,None,None,None,None,None,None,None,None),
 	(4,1,"GtkWidget","margin-end","8",None,None,None,None,None,None,None,None,None),
 	(4,1,"GtkWidget","margin-start","8",None,None,None,None,None,None,None,None,None),

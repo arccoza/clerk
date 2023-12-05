@@ -14,8 +14,6 @@
     <child>
       <object class="GtkBox" id="titles">
         <property name="hexpand">True</property>
-        <property name="margin-end">4</property>
-        <property name="margin-start">4</property>
         <property name="orientation">vertical</property>
         <property name="spacing">4</property>
         <property name="valign">center</property>

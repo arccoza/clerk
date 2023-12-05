@@ -204,10 +204,10 @@ Object.entries({ atob, btoa, fetch: fetch2, WebSocket }).forEach(([key, value]) 
 });
 
 // src/main.js
-import GObject5 from "gi://GObject";
+import GObject6 from "gi://GObject";
 import Gio4 from "gi://Gio";
 import Gtk4 from "gi://Gtk?version=4.0";
-import Adw3 from "gi://Adw?version=1";
+import Adw4 from "gi://Adw?version=1";
 
 // src/gobjects.js
 import Gio2 from "gi://Gio";
@@ -622,7 +622,7 @@ var MediaPicker = GObject3.registerClass({
     order.add_css_class("title-4");
     const row = new DetailRow();
     row.prefix.child = order;
-    row.order.child = order;
+    row.order = order;
     listItem.child = row;
   }
   bindMovieItem(listView, listItem) {
@@ -689,10 +689,23 @@ function get_selected_items(select) {
 }
 
 // src/ClerkWindow.js
-import GObject4 from "gi://GObject";
+import GObject5 from "gi://GObject";
 import Gtk3 from "gi://Gtk";
+import Adw3 from "gi://Adw";
+
+// src/PrefsWindow.js
+import GObject4 from "gi://GObject";
 import Adw2 from "gi://Adw";
-var ClerkWindow = GObject4.registerClass({
+var PrefsWindow = GObject4.registerClass({
+  GTypeName: "PrefsWindow",
+  Template: "resource:///com/arccoza/clerk/ui/PrefsWindow.ui",
+  Children: [],
+  InternalChildren: []
+}, class PrefsWindow2 extends Adw2.Window {
+});
+
+// src/ClerkWindow.js
+var ClerkWindow = GObject5.registerClass({
   GTypeName: "ClerkWindow",
   Template: "resource:///com/arccoza/clerk/ui/ClerkWindow.ui",
   InternalChildren: [
@@ -700,15 +713,17 @@ var ClerkWindow = GObject4.registerClass({
     "filesUpdate",
     "filePicker",
     "files",
+    "renames",
     "mediaPicker",
-    "renames"
+    "prefsWindow"
   ]
-}, class ClerkWindow2 extends Adw2.ApplicationWindow {
+}, class ClerkWindow2 extends Adw3.ApplicationWindow {
   constructor(application) {
     super({ application });
     this._mediaPicker.transient_for = this;
     this._mediaPicker.connect("cancelled", this.onMediaCancelled.bind(this));
     this._mediaPicker.connect("selected", this.onMediaAdded.bind(this));
+    this._prefsWindow.transient_for = this;
   }
   async onFilesAdd(button) {
     console.log("onFilesAdd");
@@ -737,6 +752,9 @@ var ClerkWindow = GObject4.registerClass({
       this._renames.append(item);
     }
     picker.hide();
+  }
+  onEditRenameTemplate(button) {
+    this._prefsWindow.show();
   }
   setupFileItem(listView, listItem) {
     const order = new Gtk3.Label();
@@ -786,8 +804,8 @@ var ClerkWindow = GObject4.registerClass({
 import Soup3 from "gi://Soup";
 pkg.initGettext();
 pkg.initFormat();
-var ClerkApplication = GObject5.registerClass(
-  class ClerkApplication2 extends Adw3.Application {
+var ClerkApplication = GObject6.registerClass(
+  class ClerkApplication2 extends Adw4.Application {
     constructor() {
       super({ application_id: "com.arccoza.clerk", flags: Gio4.ApplicationFlags.DEFAULT_FLAGS });
       const quit_action = new Gio4.SimpleAction({ name: "quit" });
@@ -809,7 +827,7 @@ var ClerkApplication = GObject5.registerClass(
           ],
           copyright: "\xA9 2023 Adrien"
         };
-        const aboutWindow = new Adw3.AboutWindow(aboutParams);
+        const aboutWindow = new Adw4.AboutWindow(aboutParams);
         aboutWindow.present();
       });
       this.add_action(show_about_action);

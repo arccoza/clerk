@@ -2,6 +2,7 @@ import GObject from "gi://GObject"
 import Gtk from "gi://Gtk"
 import Adw from "gi://Adw"
 import { DetailRow } from "./DetailRow"
+import { PrefsWindow } from "./PrefsWindow"
 
 
 export const ClerkWindow = GObject.registerClass({
@@ -12,8 +13,9 @@ export const ClerkWindow = GObject.registerClass({
     "filesUpdate",
     "filePicker",
     "files",
-    "mediaPicker",
     "renames",
+    "mediaPicker",
+    "prefsWindow",
   ],
 }, class ClerkWindow extends Adw.ApplicationWindow {
   constructor(application) {
@@ -22,6 +24,8 @@ export const ClerkWindow = GObject.registerClass({
     this._mediaPicker.transient_for = this
     this._mediaPicker.connect("cancelled", this.onMediaCancelled.bind(this))
     this._mediaPicker.connect("selected", this.onMediaAdded.bind(this))
+
+    this._prefsWindow.transient_for = this
   }
 
   async onFilesAdd(button) {
@@ -61,6 +65,10 @@ export const ClerkWindow = GObject.registerClass({
     }
 
     picker.hide()
+  }
+
+  onEditRenameTemplate(button) {
+    this._prefsWindow.show()
   }
 
   setupFileItem(listView, listItem) {

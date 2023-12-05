@@ -125,10 +125,11 @@ dim-label</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="editRenameTemplate">
                         <property name="css-classes">flat</property>
                         <property name="icon-name">document-edit-symbolic</property>
                         <property name="margin-end">12</property>
+                        <signal name="clicked" handler="onEditRenameTemplate"/>
                       </object>
                     </child>
                   </object>
@@ -272,6 +273,10 @@ view</property>
     <signal name="response" handler="onFilesAdded"/>
   </object>
   <object class="MediaPicker" id="mediaPicker">
+    <property name="modal">True</property>
+  </object>
+  <object class="PrefsWindow" id="prefsWindow">
+    <property name="height-request">640</property>
     <property name="modal">True</property>
   </object>
 </interface>

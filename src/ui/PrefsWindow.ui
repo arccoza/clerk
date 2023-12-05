@@ -1,0 +1,359 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.16.0 -->
+<interface>
+  <requires lib="gtk" version="4.2"/>
+  <requires lib="libadwaita" version="1.2"/>
+  <template class="PrefsWindow" parent="AdwWindow">
+    <property name="title">Rename Template</property>
+    <property name="width-request">320</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="AdwHeaderBar">
+            <property name="css-classes">flat</property>
+            <property name="decoration-layout">icon:close</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwClamp">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">48</property>
+            <property name="margin-start">48</property>
+            <property name="margin-top">24</property>
+            <child>
+              <object class="GtkBox">
+                <property name="hexpand">True</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">24</property>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <property name="focusable">True</property>
+                    <child>
+                      <object class="AdwEntryRow">
+                        <property name="css-classes">view</property>
+                        <property name="text">S%sE%e - %N - %E</property>
+                        <property name="title">Enter your rename template</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="vexpand">True</property>
+            <child>
+              <object class="AdwClamp">
+                <property name="margin-bottom">24</property>
+                <property name="margin-end">48</property>
+                <property name="margin-start">48</property>
+                <property name="margin-top">12</property>
+                <child>
+                  <object class="GtkBox" id="tags">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">24</property>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="commonTags">
+                        <property name="description">Tags used by Movies and Shows</property>
+                        <property name="hexpand">True</property>
+                        <property name="title">Common</property>
+                        <property name="width-request">320</property>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Filesystem safe name</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Movie / Show Name</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%N</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Short year (23) or long year (2023)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Release Year</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%YY</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%YYYY</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Short month (1) or long month (01)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Release Month Number</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%M</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%MM</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Month name short (Dec) or long (December)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Release Month Name</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%MMM</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%MMMM</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Day short (5) or long (05)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Release Day Number</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%D</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%DD</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Day name short (Mon) or long (Monday)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Release Day Name</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%DDD</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%DDDD</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="seasonTags">
+                        <property name="description">Tags used by Seasons</property>
+                        <property name="hexpand">True</property>
+                        <property name="title">Seasons</property>
+                        <property name="width-request">320</property>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Season number</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Season Number</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%S</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Season name (Volume / Specials etc.)</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Season Name</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%SN</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwPreferencesGroup" id="episodeTags">
+                        <property name="description">Tags used by Episodes</property>
+                        <property name="hexpand">True</property>
+                        <property name="title">Episodes</property>
+                        <property name="width-request">320</property>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Add padding with</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Episode Number</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%E</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Filesystem safe name</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Episode Name</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%EN</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Number of episodes in the season</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Episodes in Season</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%EC</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="can-focus">False</property>
+                            <property name="hexpand">True</property>
+                            <property name="subtitle">Total episodes in the show</property>
+                            <property name="subtitle-lines">1</property>
+                            <property name="title">Episodes in Show</property>
+                            <property name="title-lines">1</property>
+                            <property name="use-markup">False</property>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="css-classes">accent</property>
+                                <property name="halign">center</property>
+                                <property name="label">%ET</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

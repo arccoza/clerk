@@ -702,6 +702,12 @@ var PrefsWindow = GObject4.registerClass({
   Children: [],
   InternalChildren: []
 }, class PrefsWindow2 extends Adw2.Window {
+  constructor() {
+    super();
+  }
+  onTagPressed(button, ev) {
+    console.log(button.label);
+  }
 });
 
 // src/ClerkWindow.js

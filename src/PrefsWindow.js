@@ -8,5 +8,11 @@ export const PrefsWindow = GObject.registerClass({
   Children: [],
   InternalChildren: [],
 }, class PrefsWindow extends Adw.Window {
+  constructor() {
+    super()
+  }
 
+  onTagPressed(button, ev) {
+    console.log(button.label)
+  }
 })

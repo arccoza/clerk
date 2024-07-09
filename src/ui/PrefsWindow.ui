@@ -76,6 +76,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%N</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -95,6 +96,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%YY</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                             <child>
@@ -103,6 +105,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%YYYY</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -122,6 +125,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%M</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                             <child>
@@ -130,6 +134,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%MM</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -149,6 +154,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%MMM</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                             <child>
@@ -157,6 +163,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%MMMM</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -176,6 +183,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%D</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                             <child>
@@ -184,6 +192,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%DD</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -203,6 +212,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%DDD</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                             <child>
@@ -211,6 +221,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%DDDD</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -238,6 +249,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%S</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -257,6 +269,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%SN</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -284,6 +297,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%E</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -303,6 +317,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%EN</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -322,6 +337,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%EC</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
@@ -341,6 +357,7 @@
                                 <property name="halign">center</property>
                                 <property name="label">%ET</property>
                                 <property name="valign">center</property>
+                                <signal name="clicked" handler="onTagPressed"/>
                               </object>
                             </child>
                           </object>
